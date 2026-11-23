@@ -1,0 +1,2182 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#13559E">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>Privacy HQ — Data Protection &amp; Cybersecurity Simulation</title>
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="icon-192.png">
+<style>
+:root{
+  color-scheme:light;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+  --bg:#DCE8F7;--sky:#BDD9F7;--card:#FFFFFF;--ink:#132033;--mute:#4B5E75;--line:#C4D3E6;--soft:#E6EFFA;
+  --brand:#13559E;--brand-dark:#0A3363;--brandtxt:#FFFFFF;--warn:#C87D16;--bad:#C0362C;--good:#168044;
+  --shadow-3d:0 6px 0 #B2C3DC, 0 14px 26px rgba(16,46,88,.16);
+  --display:system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;
+  --body:system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;
+}
+html{scroll-padding-top:calc(96px + env(safe-area-inset-top,0px))}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0C141F;--sky:#111F33;--card:#162234;--ink:#E8EEF6;--mute:#96A8BF;--line:#26374E;--soft:#1C2C42;--warn:#E5A848;--bad:#EC786D;--good:#54C987;--shadow-3d:0 6px 0 #080D14, 0 14px 26px rgba(0,0,0,.5);color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#0C141F;--sky:#111F33;--card:#162234;--ink:#E8EEF6;--mute:#96A8BF;--line:#26374E;--soft:#1C2C42;--warn:#E5A848;--bad:#EC786D;--good:#54C987;--shadow-3d:0 6px 0 #080D14, 0 14px 26px rgba(0,0,0,.5);color-scheme:dark}
+*{box-sizing:border-box}
+[hidden]:not([hidden=until-found i]){display:none!important}
+img,svg{max-width:100%}
+body{margin:0;padding:0;background:linear-gradient(180deg,var(--sky) 0%,var(--bg) 340px);color:var(--ink);font-family:var(--body);font-size:15px;line-height:1.45;min-height:100vh}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--sky)}
+h1,h2,h3,h4{font-family:var(--display);margin:0;text-wrap:balance;letter-spacing:-0.01em}
+p{margin:0}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.wrap{max-width:1100px;margin:0 auto;padding-block:12px 54px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+
+/* Tactile 3D Buttons */
+button{font:inherit;color:var(--ink);background:var(--card);border:2px solid var(--line);border-bottom-width:4px;border-radius:12px;padding:9px 14px;min-height:44px;cursor:pointer;position:relative;font-weight:600;transition:transform .08s,border-color .15s,background .15s;touch-action:manipulation}
+button:hover{border-color:var(--brand)}
+button:focus-visible{outline:3px solid var(--warn);outline-offset:2px}
+button:active{transform:translateY(2px);border-bottom-width:2px}
+button.primary{background:linear-gradient(180deg,#1A68BF,var(--brand));color:var(--brandtxt);border-color:var(--brand-dark);border-bottom-width:4px}
+button.primary:hover{filter:brightness(1.06)}
+button[aria-disabled="true"]{opacity:.52;cursor:not-allowed}
+button[aria-disabled="true"]:active{transform:none;border-bottom-width:4px}
+
+/* Header & Signature */
+header.brand{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:6px 0 12px;flex-wrap:wrap}
+.brand-left{display:flex;align-items:center;gap:12px}
+.logo{width:48px;height:48px;border-radius:14px;background:linear-gradient(145deg,#257CE0,var(--brand));color:var(--brandtxt);display:grid;place-items:center;font-size:24px;flex:none;box-shadow:0 4px 0 var(--brand-dark)}
+header.brand h1{font-size:22px;font-weight:800}
+header.brand small{display:block;color:var(--mute);font-size:13px}
+.sig-badge{font-size:12px;font-weight:700;color:var(--brand);background:var(--card);border:1.5px solid var(--line);border-bottom-width:3px;padding:6px 12px;border-radius:99px;letter-spacing:.01em}
+:root[data-theme="dark"] .sig-badge{color:#6FB1FF}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .sig-badge{color:#6FB1FF}}
+
+/* Sticky HUD with Bounce Feedback */
+.hud{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);display:grid;grid-template-columns:1fr 1.15fr auto;gap:10px;align-items:stretch;padding-block:8px;border-bottom:2px solid var(--line);margin-bottom:12px;box-shadow:0 4px 14px rgba(16,46,88,.08)}
+@media (max-width:640px){
+  .wrap{padding-block:6px 18px;padding-inline:10px}
+  header.brand{padding:2px 0 6px;gap:6px}
+  .logo{width:34px;height:34px;font-size:18px;border-radius:10px}
+  header.brand h1{font-size:17px}
+  header.brand small,.sig-badge{font-size:11px}
+  .sig-badge{padding:3px 8px}
+  .hud{grid-template-columns:1fr 1fr auto;gap:6px;padding-block:4px;margin-bottom:6px}
+  .meter{padding:5px 8px;border-radius:10px;border-bottom-width:3px}
+  .ml{font-size:10px}
+  .cap-pill{font-size:9.5px;padding:1px 5px}
+  .meter b{font-size:17px}
+  .meter b small{font-size:10px}
+  .bar{height:6px;margin-top:3px}
+  .hud .pause{padding:6px 10px;min-height:38px;font-size:12px}
+  .goal{display:none}
+  .hq-stage{padding:8px;border-radius:14px;margin-bottom:8px;border-bottom-width:3px}
+  .hq-head{margin-bottom:4px;gap:4px}
+  .hq-head h2{font-size:13px}
+  .live-pill{font-size:10px;padding:1px 6px}
+  .zoom-bar button{min-height:28px;min-width:28px;font-size:12px}
+  .zoom-lvl{font-size:11px;min-width:36px}
+  .hq-hint-pill{display:none}
+  .room-dock{padding:10px;border-radius:14px;gap:8px;border-bottom-width:3px}
+  .dock-top{gap:6px}
+  .chip{width:32px;height:32px;border-radius:9px}
+  .dock-title h3{font-size:15px}
+  .dock-title small{font-size:11.5px;line-height:1.25}
+  .dock-tabs{flex-wrap:nowrap;overflow-x:auto;padding-bottom:2px;width:100%;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+  .dock-tabs::-webkit-scrollbar{display:none}
+  .dock-tabs button{min-height:30px;padding:3px 9px;font-size:11.5px;flex:none}
+  .dock-grid{gap:8px}
+  .dock-ops{padding:8px;gap:6px}
+  .dock-ops .row button{min-height:38px;padding:6px 10px;font-size:13px}
+  .rtext{font-size:11.5px}
+  .shop{gap:6px}
+  .item{padding:7px 9px}
+  .item b{font-size:13px}
+  .item .eff{font-size:11px;line-height:1.25}
+  .item button{min-height:34px;padding:5px 10px;font-size:12.5px}
+  .incident-banner{padding:7px 10px;gap:8px}
+  .incident-preview{font-size:12px}
+  .incident-respond-btn{min-height:32px;padding:4px 10px;font-size:12px}
+  .app-footer{margin-top:12px;padding-top:8px;font-size:11.5px}
+}
+.meter{background:var(--card);border:2px solid var(--line);border-bottom-width:4px;border-radius:14px;padding:8px 12px;min-width:0;transition:transform .18s cubic-bezier(.34,1.56,.64,1)}
+.meter.pop{transform:scale(1.03)}
+.ml{display:flex;justify-content:space-between;align-items:center;gap:6px;font-size:12px;color:var(--mute);font-weight:700;text-transform:uppercase;letter-spacing:.03em}
+.cap-pill{font-size:11px;font-weight:800;text-transform:none;letter-spacing:0;background:var(--soft);color:var(--brand);padding:1px 7px;border-radius:99px}
+:root[data-theme="dark"] .cap-pill{color:#6FB1FF}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .cap-pill{color:#6FB1FF}}
+.meter b{font-family:var(--display);font-size:24px;display:block;font-variant-numeric:tabular-nums;line-height:1.2;font-weight:800}
+.meter b small{font-family:var(--body);font-size:12px;font-weight:600;color:var(--mute);margin-left:4px}
+.bar{height:10px;border-radius:99px;background:var(--line);overflow:hidden;margin-top:5px;position:relative;box-shadow:inset 0 2px 3px rgba(0,0,0,.14)}
+.bar .fill{display:block;height:100%;width:0;background:var(--brand);transition:width .3s,background .3s;border-radius:99px}
+.bar .cap-zone{position:absolute;top:0;bottom:0;right:0;width:0;background:repeating-linear-gradient(45deg,rgba(15,23,42,.18),rgba(15,23,42,.18) 4px,rgba(15,23,42,.06) 4px,rgba(15,23,42,.06) 8px);border-left:2px solid var(--ink);transition:width .3s}
+.hud .pause{align-self:center}
+.goal{font-size:13px;color:var(--mute);margin-bottom:12px;max-width:96ch;background:var(--card);border:1.5px solid var(--line);padding:10px 14px;border-radius:12px}
+.goal strong{color:var(--ink)}
+
+/* 3D Isometric Cutaway HQ Stage */
+.hq-stage{background:linear-gradient(180deg,#CBE2FA 0%,#AED79E 65%,#95C483 100%);border:2px solid var(--line);border-bottom-width:5px;border-radius:20px;padding:12px 14px 14px;margin-bottom:16px;box-shadow:var(--shadow-3d);position:relative;overflow:hidden}
+:root[data-theme="dark"] .hq-stage{background:linear-gradient(180deg,#122238 0%,#182E24 65%,#12241C 100%)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .hq-stage{background:linear-gradient(180deg,#122238 0%,#182E24 65%,#12241C 100%)}}
+.hq-head{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:8px;flex-wrap:wrap}
+.hq-head h2{font-size:16px;font-weight:800;color:var(--ink);display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.live-pill{font-size:11px;font-weight:700;padding:2px 8px;border-radius:99px;background:#DCF5E7;color:#116336;border:1px solid #86D6A9;display:inline-flex;align-items:center;gap:5px}
+.live-dot{width:7px;height:7px;border-radius:50%;background:#16A34A;animation:blinkDot 1.4s infinite}
+@keyframes blinkDot{0%,100%{opacity:1}50%{opacity:.35}}
+.hq-controls{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.zoom-bar{display:inline-flex;align-items:center;gap:4px;background:var(--card);border:1.5px solid var(--line);border-radius:11px;padding:3px}
+.zoom-bar button{min-height:34px;min-width:36px;padding:2px 8px;border-radius:8px;border-width:1.5px;border-bottom-width:3px;font-size:14px;line-height:1}
+.zoom-lvl{font-size:12px;font-weight:700;padding:0 6px;font-variant-numeric:tabular-nums;color:var(--ink);min-width:44px;text-align:center}
+
+/* Isolated Viewport Box */
+.hq-viewport{width:100%;height:460px;border-radius:16px;overflow:hidden;position:relative;touch-action:none;cursor:grab;background:radial-gradient(circle at 50% 38%,rgba(255,255,255,.38),transparent 74%);border:2px solid rgba(15,23,42,.14);box-shadow:inset 0 2px 10px rgba(15,23,42,.08)}
+.hq-viewport:active{cursor:grabbing}
+@media (max-width:640px){.hq-viewport{height:clamp(225px,36vh,290px)}}
+.hq-svg{width:100%;height:100%;display:block;user-select:none;transform-origin:0 0;will-change:transform}
+.hq-hint-pill{position:absolute;left:10px;bottom:10px;background:rgba(15,23,42,.82);color:#fff;font-size:11px;font-weight:600;padding:5px 11px;border-radius:99px;pointer-events:none;backdrop-filter:blur(3px)}
+
+/* Room Interaction, Squash & Stretch Juice, Shield Auras */
+.hq-room{cursor:pointer;outline:none}
+.hq-room .room-floor{transition:filter .18s ease}
+.hq-room:hover .room-floor,
+.hq-room:focus-visible .room-floor{filter:brightness(1.05)}
+.hq-room .room-select-ring{opacity:0;transition:opacity .18s ease;pointer-events:none}
+.hq-room:hover .room-select-ring,
+.hq-room:focus-visible .room-select-ring,
+.hq-room.selected .room-select-ring{opacity:1}
+.hq-room .shield-aura{opacity:0;transition:opacity .3s ease;pointer-events:none}
+.hq-room.protected .shield-aura{opacity:1}
+.hq-room .work-btn-pill{transition:filter .15s ease,opacity .2s ease}
+.hq-room:hover .work-btn-pill{filter:brightness(1.08)}
+.hq-room.cooling .work-btn-pill{opacity:.65}
+
+/* Progressive Room Props Visibility */
+.prop-tier-1,.prop-tier-2{opacity:0;transition:opacity .35s ease}
+.hq-room.tier-1 .prop-tier-1,
+.hq-room.tier-2 .prop-tier-1{opacity:1}
+.hq-room.tier-2 .prop-tier-2{opacity:1}
+.prop-dust{opacity:.85;transition:opacity .35s ease}
+.hq-room.tier-1 .prop-dust,
+.hq-room.tier-2 .prop-dust{opacity:0}
+
+@keyframes propSpring{
+  0%{transform:scale(1,1)}
+  30%{transform:scale(1.16,0.86)}
+  60%{transform:scale(0.94,1.08)}
+  82%{transform:scale(1.04,0.97)}
+  100%{transform:scale(1,1)}
+}
+.spring-pop{animation:propSpring .48s cubic-bezier(.25,1.5,.5,1)}
+
+@keyframes coinBurst{
+  0%{opacity:1;transform:translate(0,0) scale(.7)}
+  35%{opacity:1;transform:translate(var(--dx),var(--dy)) scale(1.15)}
+  100%{opacity:0;transform:translate(calc(var(--dx) * 1.4),calc(var(--dy) - 44px)) scale(.85)}
+}
+.coin-particle{animation:coinBurst .82s cubic-bezier(.16,.84,.44,1) forwards;pointer-events:none}
+
+
+/* Non-Blocking HUD Incident Alert Banner & 400ms Input Guard */
+.incident-banner{grid-column:1 / -1;display:flex;align-items:center;justify-content:space-between;gap:12px;background:#FEF3C7;color:#451A03;border:2px solid #F59E0B;border-bottom-width:4px;border-radius:14px;padding:10px 14px;box-shadow:0 8px 20px rgba(15,23,42,.12);flex-wrap:wrap}
+:root[data-theme="dark"] .incident-banner{background:#3A2608;color:#FDE68A;border-color:#D97706}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .incident-banner{background:#3A2608;color:#FDE68A;border-color:#D97706}}
+.incident-banner-main{display:flex;align-items:center;gap:10px;min-width:0;flex:1 1 220px}
+.incident-badge{background:#F59E0B;color:#FFFFFF;font-size:12px;font-weight:800;padding:3px 9px;border-radius:999px;white-space:nowrap}
+.incident-preview{font-size:13.5px;font-weight:700;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.incident-respond-btn{background:linear-gradient(180deg,#F59E0B,#D97706);color:#FFFFFF;border-color:#92400E;border-bottom-width:3px;min-height:38px;padding:6px 14px;font-size:13.5px;white-space:nowrap}
+.incident-respond-btn:hover{filter:brightness(1.06);border-color:#78350F}
+.choices button.guarding{opacity:.55;cursor:wait}
+.guard-note{font-size:12.5px;color:var(--warn);font-weight:600;margin-top:8px;min-height:1.2em}
+
+/* Active Room Control Dock */
+.room-dock{background:var(--card);border:2px solid var(--brand);border-bottom-width:5px;border-radius:18px;padding:16px;box-shadow:var(--shadow-3d);display:grid;gap:12px}
+.dock-top{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap}
+.dock-title{display:flex;align-items:center;gap:10px}
+.chip{width:42px;height:42px;border-radius:12px;background:linear-gradient(145deg,var(--soft),#D7E6F9);color:var(--brand);display:grid;place-items:center;flex:none;border:1px solid var(--line);box-shadow:0 3px 0 var(--line)}
+:root[data-theme="dark"] .chip{background:var(--soft);color:#6FB1FF}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .chip{background:var(--soft);color:#6FB1FF}}
+.dock-title h3{font-size:20px;font-weight:800}
+.dock-title small{display:block;font-size:13px;color:var(--mute)}
+.dock-tabs{display:flex;flex-wrap:wrap;gap:6px}
+.dock-tabs button{min-height:36px;padding:5px 10px;font-size:12px;border-radius:9px;display:inline-flex;align-items:center;gap:5px}
+.dock-tabs button.active{background:var(--brand);color:var(--brandtxt);border-color:var(--brand-dark)}
+.dock-tabs button .tab-done{color:var(--good);font-weight:800}
+.dock-tabs button.active .tab-done{color:#86EFAC}
+.dock-grid{display:grid;grid-template-columns:1fr 1.35fr;gap:14px;align-items:start}
+@media (max-width:740px){.dock-grid{grid-template-columns:1fr}}
+.dock-ops{background:var(--bg);border:1.5px solid var(--line);border-radius:14px;padding:12px;display:grid;gap:10px}
+.row{display:grid;grid-template-columns:1fr auto;gap:8px}
+.work{display:flex;justify-content:space-between;align-items:center;gap:8px;text-align:left;overflow:hidden}
+.work .gain{font-variant-numeric:tabular-nums;background:color-mix(in srgb,currentColor 18%,transparent);border-radius:7px;padding:2px 8px}
+.work .cd{position:absolute;left:0;right:0;bottom:0;height:4px;background:color-mix(in srgb,currentColor 75%,transparent);transform-origin:left;transform:scaleX(0);transition:transform .5s linear}
+.work .cd.snap{transition:none}
+.risk{display:grid;gap:4px}
+.rbar{height:8px;border-radius:99px;background:var(--line);overflow:hidden;box-shadow:inset 0 1px 2px rgba(0,0,0,.1)}
+.rbar .rfill{display:block;height:100%;width:0;background:var(--good);transition:width .3s,background .3s;border-radius:99px}
+.rtext{display:flex;justify-content:space-between;gap:8px;font-size:13px;color:var(--mute)}
+.rtext .rlab{font-weight:700;color:var(--ink)}
+.rtext .rlab.high{color:var(--bad)}
+.shop{list-style:none;margin:0;padding:0;display:grid;gap:8px}
+.item{display:flex;justify-content:space-between;align-items:center;gap:10px;border:1.5px dashed var(--line);border-radius:12px;padding:9px 11px;background:var(--bg)}
+.item.own{border-style:solid;border-color:var(--good);background:color-mix(in srgb,var(--good) 7%,var(--card))}
+.item div{min-width:0}
+.item b{display:block;font-size:14px}
+.item .eff{display:block;font-size:12px;color:var(--mute)}
+.item button{padding:7px 12px;flex:none;font-variant-numeric:tabular-nums;min-height:40px}
+.item.own button{border-color:var(--good);color:var(--good);font-weight:700;background:var(--card)}
+
+.toast{position:fixed;left:max(12px,env(safe-area-inset-left,0px));right:max(12px,env(safe-area-inset-right,0px));bottom:calc(14px + env(safe-area-inset-bottom,0px));max-width:560px;margin:0 auto;background:var(--ink);color:var(--bg);border-radius:14px;padding:12px 16px;font-size:14px;z-index:15;opacity:0;pointer-events:none;transform:translateY(8px);transition:opacity .2s,transform .2s;box-shadow:0 10px 25px rgba(0,0,0,.25)}
+.toast.show{opacity:1;transform:none}
+
+/* Modals & Sheets — High z-index and explicit pointer-events to guarantee all answers are clickable */
+.modal{position:fixed;inset:0;background:rgba(10,16,26,.68);display:flex;align-items:flex-end;justify-content:center;z-index:50;backdrop-filter:blur(2px);pointer-events:auto}
+.sheet{background:var(--card);width:100%;max-width:640px;border-radius:20px 20px 0 0;max-height:92vh;overflow:auto;padding:22px max(16px,env(safe-area-inset-right,0px)) calc(22px + env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px));outline:none;border:2px solid var(--line);box-shadow:0 20px 40px rgba(0,0,0,.3);position:relative;pointer-events:auto;z-index:51}
+@media (min-width:700px){.modal{align-items:center}.sheet{border-radius:20px;padding-inline:24px}}
+.sheet-top{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin-bottom:6px}
+.close-x{min-width:40px;min-height:40px;width:40px;height:40px;padding:0;display:grid;place-items:center;border-radius:11px;font-size:18px;line-height:1;flex:none;color:var(--mute);background:var(--bg)}
+.close-x:hover{color:var(--ink);border-color:var(--bad)}
+.sheet h3{font-size:21px;margin-bottom:8px;font-weight:800}
+.sheet h4{font-size:15px;margin:16px 0 6px}
+.tag{display:inline-block;font-size:12px;background:var(--soft);color:var(--brand);font-weight:700;border-radius:7px;padding:4px 10px;letter-spacing:.03em;text-transform:uppercase;align-self:center}
+:root[data-theme="dark"] .tag{color:#6FB1FF}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .tag{color:#6FB1FF}}
+.choices{display:grid;gap:9px;margin-top:14px;position:relative;z-index:2}
+.choices button{text-align:left;width:100%;pointer-events:auto;cursor:pointer}
+.choices button:hover{background:var(--soft);border-color:var(--brand)}
+.choices button small{display:block;font-size:12px;color:var(--mute);margin-top:2px;font-weight:400}
+.note{font-size:13px;color:var(--mute);margin-top:10px}
+.fb{font-weight:700;margin:12px 0 4px}
+.fb.good{color:var(--good)}.fb.bad{color:var(--bad)}
+
+/* Incident Sheet Styled to Match Reference Warning Banner & Dark Card */
+.sheet.event-sheet{background:#101925;border-color:#23344A;color:#F1F5F9}
+.sheet.event-sheet .tag{background:#16273B;color:#5AA3FF;border-radius:8px;padding:6px 11px;font-size:11.5px;letter-spacing:.04em}
+.sheet.event-sheet .close-x{width:46px;height:46px;min-width:46px;min-height:46px;border-radius:12px;background:#16202E;border:1.5px solid #263549;border-bottom-width:1.5px;color:#CBD5E1;font-size:18px}
+.sheet.event-sheet .close-x:hover{color:#FFFFFF;border-color:#3B82F6;background:#1C293B}
+.sheet.event-sheet h3{color:#FFFFFF;font-size:24px;font-weight:800;margin:10px 0 8px}
+.sheet.event-sheet #mText{color:#CBD5E1;font-size:15px;line-height:1.5}
+.sheet.event-sheet .choices{gap:11px;margin-top:16px}
+.sheet.event-sheet .choices button{background:#121D2B;border:1.5px solid #26364B;border-bottom-width:1.5px;border-radius:14px;padding:14px 16px;color:#F8FAFC;font-size:14.5px;font-weight:600}
+.sheet.event-sheet .choices button:hover{background:#172638;border-color:#3B82F6}
+.sheet.event-sheet .choices button:active{transform:none;border-bottom-width:1.5px}
+.sheet.event-sheet .incident-warn-box{margin-top:16px;display:flex;align-items:center;gap:10px;background:#262317;border:1.5px solid #C8962E;border-radius:12px;padding:12px 14px;color:#E2E8F0;font-size:13.5px;line-height:1.45}
+.sheet.event-sheet .incident-warn-icon{flex:none;font-size:16px;line-height:1;color:#F59E0B}
+.sheet.event-sheet .incident-warn-text strong.ignore-hl{color:#F08074;font-weight:700}
+
+.sheet.purchase-sheet{background:#13291F;border-color:#2E7D52;color:#FFFFFF}
+.purchase-sheet h3{color:#FFFFFF}
+.purchase-sheet .close-x{background:#1C2C42;border-color:#2E7D52;color:#FFFFFF}
+.purchase-sheet .close-x:hover{color:#FFFFFF;border-color:#54C987;background:#243854}
+.purchase-tag{background:#1C2C42;color:#FFFFFF;border:1px solid #54C987}
+.purchase-summary{background:#1C2C42;border:1.5px solid #2E7D52;border-radius:12px;padding:10px 12px;font-weight:700;color:#FFFFFF;margin:10px 0 12px}
+.purchase-card,.purchase-card:nth-of-type(even),.purchase-card.cream-card{background:#1C2C42;border-left:4px solid #54C987;border-top:1px solid #2A3F5C;border-right:1px solid #2A3F5C;border-bottom:1px solid #2A3F5C;border-radius:12px;padding:12px 14px;font-size:14px;margin:10px 0;color:#FFFFFF}
+.purchase-card strong{color:#FFFFFF;display:block;font-size:12px;text-transform:uppercase;letter-spacing:.04em;margin-bottom:4px;opacity:.92}
+.lesson{background:var(--bg);border:1px solid var(--line);border-radius:12px;padding:10px 12px;font-size:14px;margin:8px 0 14px}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(105px,1fr));gap:8px;margin:12px 0}
+.stats div{background:var(--bg);border:1px solid var(--line);border-radius:12px;padding:8px 10px}
+.stats dt{font-size:12px;color:var(--mute)}
+.stats dd{margin:0;font-family:var(--display);font-size:20px;font-variant-numeric:tabular-nums;font-weight:800}
+.recap{list-style:none;margin:0;padding:0;display:grid;gap:6px}
+.recap li{display:grid;grid-template-columns:auto 1fr;gap:4px 10px;font-size:14px;padding:8px 10px;border:1px solid var(--line);border-radius:10px}
+.recap .mk{font-size:12px;font-weight:700;border-radius:6px;padding:1px 8px;align-self:start;white-space:nowrap}
+.recap .ok .mk{color:var(--good);border:1px solid var(--good)}
+.recap .no .mk{color:var(--bad);border:1px solid var(--bad)}
+.recap .why{grid-column:2;font-size:13px;color:var(--mute)}
+.actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}
+
+/* Start Panel & Footer Signature */
+.panel{background:var(--card);border:2px solid var(--line);border-bottom-width:5px;border-radius:18px;padding:22px;max-width:640px;box-shadow:var(--shadow-3d)}
+.panel h2{font-size:25px;font-weight:800;margin-bottom:8px}
+.panel .lead{color:var(--mute);margin-bottom:14px}
+.field{display:grid;gap:6px;margin:0 0 14px}
+.field label{font-weight:600;font-size:14px}
+.field input{font:inherit;color:var(--ink);background:var(--bg);border:2px solid var(--mute);border-radius:10px;padding:10px 12px;min-height:44px;width:100%}
+.field input:focus-visible{outline:3px solid var(--warn);outline-offset:2px}
+.field input[aria-invalid="true"]{border-color:var(--bad)}
+.field .hint{font-size:13px;color:var(--mute)}
+.field .err{font-size:13px;color:var(--bad);font-weight:600}
+.who{color:var(--mute);font-size:14px;margin:-2px 0 8px}
+.who strong{color:var(--ink)}
+.how{display:grid;gap:8px;margin:0 0 16px;padding:0;list-style:none}
+.how li{display:grid;grid-template-columns:96px 1fr;gap:10px;font-size:14px}
+.how b{font-family:var(--display)}
+.hud .pause{padding:8px 10px}
+.app-footer{margin-top:24px;padding-top:14px;border-top:1.5px solid var(--line);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;font-size:13px;color:var(--mute)}
+.app-footer strong{color:var(--ink)}
+@media (max-width:420px){.how li{grid-template-columns:1fr;gap:0}.meter{padding:6px 10px}.meter b{font-size:22px}}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+
+<div id="app">
+<div class="wrap">
+<header class="brand">
+  <div class="brand-left">
+    <div class="logo" id="logo" aria-hidden="true"></div>
+    <div>
+      <h1 id="gameHeading">Privacy HQ</h1>
+      <small id="subHeading">Data Protection &amp; Cybersecurity Simulation<span id="who"></span></small>
+    </div>
+  </div>
+  <div class="sig-badge" aria-label="Developer attribution">Developed by Data Governance Africa</div>
+</header>
+
+<main id="mainContent">
+<section class="panel" id="start">
+  <h2>Build &amp; defend your company headquarters</h2>
+  <p class="lead" id="intro"></p>
+  <ul class="how">
+    <li><b>Operate</b><span>Watch your live 3D cutaway HQ in action—customers queue in the lobby, data couriers run the halls, and tapping any room collects coins.</span></li>
+    <li><b>Upgrade &amp; Respond</b><span>Install protections across all departments and answer live privacy &amp; security scenarios carefully.</span></li>
+    <li><b>Advance</b><span>Reach 100% Customer Trust by completing all department protections to finish Level 1, view your score, and proceed to Level 2 with 250 coins and 0% trust.</span></li>
+  </ul>
+  <form id="startForm" novalidate>
+    <div class="field">
+      <label for="player">Name your company</label>
+      <input id="player" name="player" type="text" maxlength="24" placeholder="e.g. Acme Tech" autocomplete="nickname" autocapitalize="words" spellcheck="false" aria-describedby="playerHint playerErr" required>
+      <span class="hint" id="playerHint">Enter a name for your company inside Privacy HQ. Do not enter personal IDs or phone numbers.</span>
+      <span class="err" id="playerErr" role="alert" hidden></span>
+    </div>
+    <button class="primary" id="startBtn" type="submit">Enter Privacy HQ (Level 1)</button>
+  </form>
+</section>
+
+<div id="game" hidden>
+  <h2 class="sr" id="gameTitle" tabindex="-1">Privacy HQ Floorplan</h2>
+  <div class="hud">
+    <div class="meter" id="profitMeter">
+      <span class="ml"><span>Profit (coins)</span></span>
+      <b><span id="coins">0</span><small id="goalNum"></small></b>
+      <div class="bar"><span class="fill" id="pbar" aria-hidden="true"></span></div>
+    </div>
+    <div class="meter" id="trustMeter">
+      <span class="ml"><span>Customer trust</span><span class="cap-pill" id="trustCapLabel">Max 30%</span></span>
+      <b><span id="trust">0</span>%<small id="trustGoalNum"> / 100% (All upgrades)</small></b>
+      <div class="bar"><span class="fill" id="tbar" aria-hidden="true"></span><span class="cap-zone" id="tcapZone" aria-hidden="true"></span></div>
+    </div>
+    <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap">
+      <button class="pause" id="pauseBtn" data-act="pause" aria-pressed="false">Pause</button>
+    </div>
+  </div>
+  <div class="incident-banner" id="incidentAlertBanner" role="status" aria-live="polite" hidden>
+    <div class="incident-banner-main">
+      <span class="incident-badge">⚠ <span id="incidentQueueCount">1</span> Pending</span>
+      <span class="incident-preview" id="incidentPreviewTitle"></span>
+    </div>
+    <button type="button" class="incident-respond-btn" id="respondIncidentBtn">Respond</button>
+  </div>
+  <p class="goal" id="goal"></p>
+
+  <!-- Single 3D Isometric Cutaway HQ Building with Choreographed Animations -->
+  <section class="hq-stage" aria-label="3D Cutaway Headquarters Building">
+    <div class="hq-head">
+      <h2>🏢 <span id="stageCoTitle">Privacy HQ</span> — Live Cutaway <span class="live-pill" id="liveBadge"><span class="live-dot"></span>Live Operations</span></h2>
+      <div class="hq-controls">
+        <div class="zoom-bar" role="group" aria-label="Headquarters zoom controls">
+          <button type="button" id="zoomOutBtn" aria-label="Zoom out building">−</button>
+          <span class="zoom-lvl" id="zoomLvlText">100%</span>
+          <button type="button" id="zoomInBtn" aria-label="Zoom in building">+</button>
+          <button type="button" id="zoomResetBtn" aria-label="Reset building view" style="font-size:12px;padding:2px 8px">Reset</button>
+        </div>
+      </div>
+    </div>
+    <div class="hq-viewport" id="hqViewport">
+      <svg class="hq-svg" id="hqSvg" viewBox="0 0 960 540" aria-label="Interactive 3D cutaway headquarters with department rooms"></svg>
+      <div class="hq-hint-pill">Pinch or scroll to zoom · Two fingers (or mouse) to pan · Tap room to collect</div>
+    </div>
+  </section>
+
+  <!-- Single Active Room Inspector & Upgrade Dock -->
+  <section class="room-dock" id="roomDock" aria-label="Selected room controls and protections"></section>
+</div>
+</main>
+
+<footer class="app-footer">
+  <span><strong>Privacy HQ</strong> · Interactive Data Protection &amp; Cybersecurity Simulation</span>
+  <span>Developed by <strong>Data Governance Africa</strong></span>
+</footer>
+</div>
+</div>
+
+<div class="toast" id="toast" aria-hidden="true"></div>
+<div class="sr" id="live" role="status" aria-live="polite"></div>
+<div class="modal" id="modal" hidden><div class="sheet" id="sheet" role="dialog" aria-modal="true" aria-labelledby="mTitle" tabindex="-1"></div></div>
+
+<script>
+/*ENGINE_START*/
+// ===== WHITE-LABEL CONFIG =====
+var CONFIG = {
+  gameName: "Privacy HQ",
+  defaultCompanyName: "Savanna Mobile Ltd",
+  companyName: "Savanna Mobile Ltd",
+  logo: "🛡️",
+  brandColor: "#13559E",
+  brandTextColor: "#FFFFFF",
+  currency: "KES",
+  regulator: "the Data Protection Commissioner",
+  retentionDays: 90,
+  breachHours: 72,
+  winCoins: [1500],
+  minTrust: [100]
+};
+// ==============================
+
+var LEVELS = [
+  {n:1, name:"Foundation & Compliance", depts:["fin","hr","sup","sal","mkt","it"], startCoins:280, startTrust:0, firstEvent:12, gap:[18,28], atkFirst:34, atkGap:[28,42],
+   intro:"All six operational rooms inside {co}—Finance, HR, Support, Sales, Marketing, and IT—are open. Install protections to reach 100% Customer Trust and complete Level 1, then advance straight to Level 2 with 250 coins and 0% trust."},
+  {n:2, name:"Enterprise Resilience", depts:["fin","hr","sup","sal","mkt","it"], startCoins:250, startTrust:0, firstEvent:10, gap:[15,25], atkFirst:26, atkGap:[22,36],
+   intro:"Level 2 begins at {co} with 250 coins and 0% Customer Trust. Rebuild protections across all rooms, handle tougher incidents, and complete Level 2 to finish."}
+];
+var DEPTS = {
+  fin:{name:"Finance Vault", short:"Finance", blurb:"Payments, invoices and mobile money records.", work:"Process payments", gain:12, add:3, atk:"Fraudsters probed the Finance payment systems", floor:"#DBEAFE", accent:"#2563EB"},
+  hr:{name:"HR Suite", short:"HR", blurb:"Staff files, CVs and payroll.", work:"Process payroll", gain:10, add:2, atk:"Someone tried to read HR files they should not see", floor:"#CFFAFE", accent:"#0891B2"},
+  sup:{name:"Support Desk", short:"Support", blurb:"Call centre, SIM and account queries.", work:"Handle customer calls", gain:10, add:3, atk:"Scammers phoned Customer Support posing as customers", floor:"#E0F2FE", accent:"#0284C7"},
+  sal:{name:"Sales Floor", short:"Sales", blurb:"B2B deals, pipelines and client contacts.", work:"Close a deal", gain:14, add:4, atk:"A scraper tried to copy the Sales client database", floor:"#E0E7FF", accent:"#4F46E5"},
+  mkt:{name:"Marketing Studio", short:"Marketing Studio", blurb:"Campaigns, ad tracking and subscriber lists.", work:"Launch a campaign", gain:13, add:4, atk:"An exposed tracking tag leaked Marketing subscriber data", floor:"#EDE9FE", accent:"#7C3AED"},
+  it:{name:"IT Server Room", short:"IT Ops", blurb:"Servers, networks and everyone’s logins.", work:"Keep systems running", gain:9, add:2, atk:"Attackers scanned your servers for weak spots", floor:"#CCFBF1", accent:"#0F766E"}
+};
+var SHOP = [
+  {id:"enc", dept:"fin", name:"Encryption", cost:110, eff:"Less risk from Finance records. Softens lost-device incidents.", lesson:"Encryption scrambles data so a stolen laptop or leaked file is useless to the thief.", why:"Financial records, account numbers, and payment exports carry high fraud risk if exposed or misplaced.", how:"Lower exposure in Finance Vault, reduces attack damage, and prevents stolen devices or files from exposing readable payment data."},
+  {id:"mfa", dept:"fin", name:"Multi-factor login", cost:120, eff:"Less risk from Finance records. Softens account takeovers.", lesson:"A password alone is easy to steal. A second check, like a code on a phone, stops most account takeovers.", why:"Stolen or guessed passwords alone cannot protect high-value payment and billing accounts from unauthorised sign-ins.", how:"Adds a second verification factor so attackers cannot hijack Finance accounts even if they obtain a password."},
+  {id:"acc", dept:"hr", name:"Access controls", cost:95, eff:"Less risk from HR records. Softens internal leaks.", lesson:"Only people who need a file to do their job should be able to open it (least privilege).", why:"HR files contain sensitive employee personal data, salary details, and private records that everyone does not need to see.", how:"Limits HR record access strictly to authorised roles, lowering HR exposure and reducing internal snooping or leaks."},
+  {id:"ret", dept:"hr", name:"Retention schedule", cost:95, eff:"Deletes 3 old records in every room every 5 seconds.", lesson:"Keep data only as long as you need it. After {days} days, old records are deleted, not hoarded.", why:"Holding onto stale records past {days} days increases breach blast radius, storage risk, and regulatory non-compliance.", how:"Automatically deletes 3 old records in every room every 5 seconds, keeping record counts lower and reducing trust erosion from data hoarding."},
+  {id:"ver", dept:"sup", name:"Identity checks", cost:100, eff:"Less risk from Support records. Softens impersonation.", lesson:"Ask several questions only the real account holder can answer before changing a SIM, PIN or phone number.", why:"Social engineers often call support pretending to be customers to take over accounts, SIMs, or recovery settings.", how:"Requires strong verification before sensitive account actions, reducing Support exposure and blocking impersonation attacks."},
+  {id:"pbk", dept:"sup", name:"Call playbook", cost:100, eff:"Less risk from Support records. Softens over-sharing.", lesson:"A call playbook tells agents what they may share, with whom, and when to pass a call to a supervisor.", why:"During busy call shifts, agents can accidentally overshare account details or mishandle tricky requests without clear rules.", how:"Gives agents clear boundaries and escalation steps, cutting Support risk and softening over-sharing incidents."},
+  {id:"crm", dept:"sal", name:"CRM access limits", cost:130, eff:"Less risk from Sales records. Blocks bulk exports and softens client poaching.", lesson:"Sales reps only need access to their own accounts. Blocking bulk CSV exports stops whole client lists walking out the door.", why:"Customer contact lists and deal pipelines are prime targets for bulk scraping, leaks, or unauthorised export.", how:"Restricts CRM access and bulk exports, lowering Sales exposure and softening client-list theft or scraping incidents."},
+  {id:"con", dept:"sal", name:"Lead source verification", cost:130, eff:"Less risk from Sales records. Softens cold-outreach complaints.", lesson:"Verify that every B2B or consumer lead was collected lawfully before adding it to your sales pipeline.", why:"Unverified or third-party contact lists can lead to unlawful outreach, complaints to {reg}, and damaged customer trust.", how:"Ensures leads have a valid lawful basis before outreach, reducing Sales risk and softening outreach complaints."},
+  {id:"cmp", dept:"mkt", name:"Consent & preference centre", cost:140, eff:"Less risk from Marketing records. Enforces instant opt-out requests across channels.", lesson:"Track granular opt-ins and honour unsubscribe or STOP requests immediately across every channel.", why:"Customers expect clear choices and immediate respect when they opt out of promotional messages.", how:"Tracks preferences centrally and enforces opt-outs across channels, reducing Marketing exposure and opt-out violations."},
+  {id:"dpa", dept:"mkt", name:"Ad-tech & vendor DPAs", cost:140, eff:"Less risk from Marketing records. Softens third-party agency and pixel leaks.", lesson:"Signed Data Processing Agreements and strict cookie controls limit what ad networks and agencies can do with customer data.", why:"Marketing campaigns often involve agencies, analytics tools, and tracking tags that can leak data if left unchecked.", how:"Binds vendors to privacy obligations and tighter tracking controls, lowering Marketing risk and softening third-party leaks."},
+  {id:"pat", dept:"it", name:"Security updates", cost:150, eff:"Less risk from IT records. Softens attacks on known holes.", lesson:"Attackers scan for known holes. Installing security updates promptly closes them.", why:"Attackers routinely scan systems for known software flaws as soon as patches are released.", how:"Closes known vulnerabilities in IT systems, reducing IT exposure and softening exploitation attempts."},
+  {id:"bak", dept:"it", name:"Backups", cost:140, eff:"Less risk from IT records. Softens ransomware and system-outage incidents.", lesson:"Keep copies of important data somewhere separate. Then ransomware cannot force you to pay.", why:"Ransomware or hardware failures can lock critical systems and halt operations if you have no clean recovery copy.", how:"Lets you restore data without paying ransom, reducing IT risk and softening ransomware or outage incidents."},
+  {id:"mon", dept:"it", name:"Logging and alerts", cost:150, eff:"Less risk from IT records. Speeds up breach detection and incident investigation.", lesson:"Logs show who touched what and when. Without them you learn about a breach months late, from someone else.", why:"Without audit trails and alerts, suspicious access can go unnoticed until serious damage is already done.", how:"Tracks system activity and flags anomalies early, lowering IT risk and speeding up incident response."},
+  {id:"trn", dept:"all", name:"Staff training", cost:140, eff:"Cuts risk from all rooms by 15%. Softens human-error incidents.", lesson:"Many breaches begin with a person clicking something. Trained staff spot the trap and know who to tell.", why:"Phishing, misdirected messages, and everyday mistakes affect every team across the organisation.", how:"Cuts exposure across all rooms by 15% and helps staff spot traps and report issues early."}
+];
+
+// Expanded, non-repetitive department-specific Privacy & Cybersecurity question bank
+var EVENTS = [
+  // ---- Finance Vault (fin) — Level 1
+  {id:"bec", d:"fin", lvl:1, p:"mfa", title:"Urgent wire from the “CEO”", text:"An email asks Finance at {co} to pay a new supplier {cur} 2.4M today and keep it quiet. The sender domain has a subtle typo.",
+   good:{t:"Call the CEO on a verified internal number first", f:"Right. Out-of-band voice verification stops business email compromise scams."},
+   bad:[{t:"Pay immediately so the deal is not delayed", f:"That was a fake invoice scam (BEC). The funds are gone."},{t:"Reply to the email asking if it is genuine", f:"Replying to a spoofed email simply reaches the attacker."}]},
+  {id:"laptop", d:"fin", lvl:1, p:"enc", title:"Lost Finance laptop", text:"A finance officer left a laptop containing unencrypted customer payment exports in a commuter vehicle.",
+   good:{t:"Trigger remote wipe, log the incident, and assess breach notification within {hours} hours", f:"Right. Act fast to contain exposure and notify {reg} within {hours} hours if personal data is at risk."},
+   bad:[{t:"Wait a few days to see if lost-and-found calls", f:"Delay wastes critical containment time while the {hours}-hour reporting clock runs."}]},
+  {id:"bank", d:"fin", lvl:1, p:"trn", title:"Supplier bank detail change", text:"A regular vendor emails to say its bank account changed. Tomorrow’s invoice of {cur} 480,000 is ready to disburse.",
+   good:{t:"Verify the change using the phone number on your original signed contract", f:"Right. Never trust contact details inside a payment-change email."},
+   bad:[{t:"Update the bank account and process payment", f:"Invoice-redirection fraudsters impersonate vendors to divert payouts."}]},
+  {id:"audit", d:"fin", lvl:1, p:"enc", title:"External auditor data dump", text:"An external auditor asks Finance to email the entire customer payment table as an unencrypted CSV attachment.",
+   good:{t:"Share only the sampled records via an encrypted, expiring portal link", f:"Right. Apply data minimisation and encryption in transit instead of emailing raw dumps."},
+   bad:[{t:"Email the full spreadsheet to save time", f:"Email attachments are copied across mail servers and easily forwarded by mistake."}]},
+  {id:"cardcvv", d:"fin", lvl:1, p:"enc", title:"CVV codes in invoice notes", text:"Finance staff have been typing customers’ 3-digit card security codes (CVV) into free-text billing notes for recurring charges.",
+   good:{t:"Purge all stored CVVs immediately and use tokenised payment gateways", f:"Right. Storing card verification codes violates PCI-DSS and creates severe breach liability."},
+   bad:[{t:"Password-protect the notes folder and keep recording CVVs", f:"CVV codes must never be stored after authorisation, even in restricted folders."}]},
+
+  // ---- Finance Vault (fin) — Level 2
+  {id:"taxphish", d:"fin", lvl:2, p:"mfa", title:"Fake tax portal login", text:"A Finance clerk receives an SMS linking to a lookalike tax authority portal asking for {co}’s treasury credentials and OTP.",
+   good:{t:"Close the link, report credential harvesting to IT, and verify via the official bookmark", f:"Right. Phishing proxies capture both passwords and real-time MFA tokens."},
+   bad:[{t:"Log in quickly to avoid a tax compliance penalty", f:"The lookalike site harvested the session token and compromised the treasury login."}]},
+  {id:"crossborder_fx", d:"fin", lvl:2, p:"enc", title:"Cross-border payout export", text:"Regional Treasury asks Finance to transfer unencrypted customer payout logs across borders to a partner processor without a transfer assessment.",
+   good:{t:"Pause the transfer, complete a transfer risk & safeguard check, and encrypt the payload", f:"Right. Cross-border transfers of payment records require appropriate safeguards and encryption."},
+   bad:[{t:"Send the raw file over standard SFTP to meet settlement cutoff", f:"Unassessed cross-border transfers of personal financial data expose {co} to regulatory action."}]},
+  {id:"chargeback_dump", d:"fin", lvl:2, p:"mfa", title:"Shared finance service login", text:"Four analysts share a single payment-gateway admin login to resolve dispute tickets faster during a peak billing cycle.",
+   good:{t:"Issue individual MFA-protected accounts and revoke the shared credential", f:"Right. Shared accounts erase individual audit trails and make revoking access risky."},
+   bad:[{t:"Keep the shared login until month-end reconciliation finishes", f:"Shared logins prevent attribution if fraudulent refunds or data exports occur."}]},
+
+  // ---- HR Suite (hr) — Level 1
+  {id:"curious", d:"hr", lvl:1, p:"acc", title:"Curious department head", text:"A regional manager asks HR for the complete company-wide payroll spreadsheet “to benchmark team pay”.",
+   good:{t:"Decline and provide only anonymised salary bands for their own team", f:"Right. Role-based access control restricts payroll data to strict operational need."},
+   bad:[{t:"Send the full file because they are senior management", f:"Seniority does not override confidentiality or least-privilege rules."}]},
+  {id:"cvs", d:"hr", lvl:1, p:"ret", title:"Four-year-old applicant CVs", text:"HR discovers 3,500 CVs from unsuccessful job applicants from four years ago sitting in a shared drive.",
+   good:{t:"Delete expired CVs in line with the {days}-day retention schedule", f:"Right. Storage limitation requires purging candidate data once recruitment ends."},
+   bad:[{t:"Keep them indefinitely in case a role opens up", f:"Hoarding personal data without ongoing consent or retention limits breaches privacy law."}]},
+  {id:"salarycall", d:"hr", lvl:1, p:"trn", title:"Unverified loan verification call", text:"A caller claiming to be from a lender asks HR to confirm an employee’s salary, ID number, and home address.",
+   good:{t:"Decline and require direct written authorisation from the employee first", f:"Right. Never disclose employee records to unverified third-party callers."},
+   bad:[{t:"Confirm the details so the employee’s loan is approved", f:"Pretext callers use helpful excuses to harvest employee identity data."}]},
+  {id:"medical", d:"hr", lvl:1, p:"acc", title:"Sick notes in a public folder", text:"HR realises employees’ scanned medical certificates were saved in a shared network folder readable by all staff.",
+   good:{t:"Restrict permissions immediately, audit access logs, and inform affected staff", f:"Right. Health records are special-category sensitive data requiring strict access controls."},
+   bad:[{t:"Quietly move the files and tell nobody", f:"Failing to assess whether sensitive health data was viewed hides an unlawful disclosure."}]},
+  {id:"bgcheck", d:"hr", lvl:1, p:"acc", title:"Excessive background screening", text:"A hiring lead wants HR to collect social media passwords and family medical histories from all final-stage job candidates.",
+   good:{t:"Reject the request and limit checks strictly to role-relevant qualifications", f:"Right. Collection must be proportionate, lawful, and relevant to the job role."},
+   bad:[{t:"Make it mandatory for all applicants", f:"Demanding private passwords and family health data is disproportionate and unlawful."}]},
+
+  // ---- HR Suite (hr) — Level 2
+  {id:"biometric", d:"hr", lvl:2, p:"ret", title:"Office fingerprint clock-in", text:"HR plans to roll out mandatory fingerprint scanners for attendance without a Data Protection Impact Assessment (DPIA) or PIN alternative.",
+   good:{t:"Conduct a DPIA first and offer a non-biometric badge or PIN option", f:"Right. Biometric data is high-risk sensitive data requiring a DPIA and proportionate alternatives."},
+   bad:[{t:"Install the scanners immediately across all doors", f:"Deploying biometric surveillance without a DPIA or lawful justification invites regulatory sanctions."}]},
+  {id:"whistle_leak", d:"hr", lvl:2, p:"acc", title:"Whistleblower report exposure", text:"A sensitive ethics and misconduct report naming senior staff is stored in a general HR folder accessible to junior coordinators.",
+   good:{t:"Move to a restricted, need-to-know investigation vault and audit prior views", f:"Right. Whistleblower and disciplinary records require strict confidentiality and access logging."},
+   bad:[{t:"Leave it in the general folder so HR admins can format it", f:"Broad access risks retaliation and leaks before any investigation concludes."}]},
+  {id:"hr_ai_screen", d:"hr", lvl:2, p:"ret", title:"Automated CV scoring tool", text:"A third-party vendor pitches an AI tool that auto-rejects job applicants from video interviews without human review or retention limits.",
+   good:{t:"Require human oversight, test for bias, and set strict interview data retention", f:"Right. Automated profiling and video analysis of applicants carry high fairness and privacy risks."},
+   bad:[{t:"Turn on full auto-rejection to clear the hiring backlog fast", f:"Unchecked automated screening risks unlawful discrimination and over-retention of applicant media."}]},
+
+  // ---- Support Desk (sup) — Level 1
+  {id:"simswap", d:"sup", lvl:1, p:"ver", title:"Urgent SIM swap request", text:"A caller claims their phone was lost and demands an immediate SIM replacement, knowing only the customer’s name and phone number.",
+   good:{t:"Enforce multi-factor identity verification before touching the SIM", f:"Right. Strong identity proofing blocks SIM-swap account takeovers."},
+   bad:[{t:"Process the SIM swap to keep customer satisfaction high", f:"Basic details are public or leaked; weak checks hand the victim’s mobile money to fraudsters."}]},
+  {id:"family", d:"sup", lvl:1, p:"pbk", title:"Spouse requesting call logs", text:"A caller says her husband is travelling and asks Support to read out his last six months of account transactions.",
+   good:{t:"Refuse disclosure and explain how the account holder can authenticate directly", f:"Right. Family relationships do not grant automatic authority to access personal records."},
+   bad:[{t:"Share the summary after she confirms his date of birth", f:"Disclosing account history to an unauthorised third party is a confidentiality breach."}]},
+  {id:"recording", d:"sup", lvl:1, p:"pbk", title:"“Are you recording this call?”", text:"A customer asks Support why calls are recorded, how long audio files stay on servers, and how to request a copy.",
+   good:{t:"Explain the purpose, {days}-day retention period, and subject access request process", f:"Right. Clear, honest answers satisfy the right to be informed and right of access."},
+   bad:[{t:"Say it is standard policy and deflect the question", f:"Evading transparency questions violates data subject notice obligations."}]},
+  {id:"whatsapp", d:"sup", lvl:1, p:"trn", title:"Customer ID in staff WhatsApp", text:"A Support agent snaps a photo of a customer’s national ID and posts it in a staff WhatsApp group to ask for verification help.",
+   good:{t:"Delete the image from all devices, log the breach, and enforce ticketing-only uploads", f:"Right. Consumer chat apps lack retention controls and leak sensitive IDs onto personal phones."},
+   bad:[{t:"Leave it there since everyone in the chat works at {co}", f:"Personal phones get lost, backed up to personal clouds, and lack audit trails."}]},
+  {id:"screenlock", d:"sup", lvl:1, p:"pbk", title:"Unlocked support terminals", text:"During shift handover at the Support Desk, agents leave customer CRM profiles open on unlocked screens near a visitor walkway.",
+   good:{t:"Enforce automatic 60-second screen locks and clean-desk sign-off rules", f:"Right. Shoulder-surfing and unattended terminals are easy physical breach vectors."},
+   bad:[{t:"Tell agents to minimise the window when walking away", f:"Minimising a window does not stop anyone walking past from opening customer accounts."}]},
+
+  // ---- Support Desk (sup) — Level 2
+  {id:"otpscam", d:"sup", lvl:2, p:"ver", title:"“Read me your verification code”", text:"An agent asks a caller to read back a one-time password (OTP) sent to the customer’s phone, even though the SMS says “Never share this code”.",
+   good:{t:"Use the official in-app agent verification prompt instead of asking for customer OTPs", f:"Right. Training customers to share OTPs weakens their defences against social engineers."},
+   bad:[{t:"Keep asking for the SMS OTP—it is faster", f:"If staff ask for OTPs, customers cannot tell genuine support apart from scammers."}]},
+  {id:"ticket_export", d:"sup", lvl:2, p:"pbk", title:"Support ticket escalation sheet", text:"To speed up a complex outage review, a team lead copies 2,000 customer complaint transcripts—including phone numbers and addresses—into a shared doc.",
+   good:{t:"Redact personal identifiers and share aggregated issue trends via a restricted workspace", f:"Right. Incident analysis rarely needs raw customer contact details and addresses."},
+   bad:[{t:"Share the raw transcripts with the whole operations chat", f:"Raw support tickets often contain sensitive personal details and account identifiers."}]},
+  {id:"vip_bypass", d:"sup", lvl:2, p:"ver", title:"“VIP account” verification shortcut", text:"A caller claims to be a high-value enterprise client and asks Support to skip security questions to reset their account recovery email.",
+   good:{t:"Follow the standard high-risk verification steps regardless of account tier", f:"Right. High-value accounts are prime targets for social-engineering bypasses."},
+   bad:[{t:"Skip verification so a key account isn’t upset", f:"Bypassing verification on a recovery-email change hands control of the account to an attacker."}]},
+
+  // ---- Sales Floor (sal) — Level 1
+  {id:"list", d:"sal", lvl:1, p:"con", title:"Discount B2C lead database", text:"A data broker offers 50,000 consumer phone numbers at a steep discount, claiming “everyone agreed to partner offers”.",
+   good:{t:"Reject the list unless verifiable, specific opt-in consent records are proven", f:"Right. You cannot rely on a broker’s word; unlawful outreach exposes {co} to fines."},
+   bad:[{t:"Buy the list and launch an SMS promo tonight", f:"Cold-messaging unconsented numbers triggers spam complaints and regulatory penalties."}]},
+  {id:"crmexport", d:"sal", lvl:1, p:"crm", title:"Departing sales rep bulk export", text:"An account executive who just resigned attempts to export all 12,000 enterprise client records from the CRM.",
+   good:{t:"Block bulk CSV exports, revoke CRM access, and audit recent download logs", f:"Right. Technical export limits prevent insider data theft during offboarding."},
+   bad:[{t:"Let them finish exporting so they can hand over notes", f:"They copied the entire customer book to a personal drive before leaving."}]},
+  {id:"bizcard", d:"sal", lvl:1, p:"con", title:"Trade expo badge scan dump", text:"Sales scans 1,500 visitor badges at an industry expo and wants to enrol everyone into automated weekly cold-call sequences.",
+   good:{t:"Send a single follow-up only to visitors who asked for info, with a clear opt-out", f:"Right. A badge scan at a booth is not blanket consent for automated marketing."},
+   bad:[{t:"Load all 1,500 contacts into the auto-dialler immediately", f:"Automated outreach without clear consent generates complaints to {reg}."}]},
+  {id:"access", d:"sal", lvl:1, p:"trn", title:"Client asks for all CRM notes", text:"A corporate client submits a Data Subject Access Request (DSAR) for all call notes and profile tags Sales holds on them.",
+   good:{t:"Verify their identity and deliver the personal records within statutory timelines", f:"Right. Internal CRM notes about an identifiable person are personal data subject to access rights."},
+   bad:[{t:"Refuse because CRM notes are internal company property", f:"Individuals have a legal right to access personal data recorded about them in CRM notes."}]},
+  {id:"publicshare", d:"sal", lvl:1, p:"crm", title:"“Anyone with the link” proposal sheet", text:"To close a deal quickly, a Sales rep puts a spreadsheet of 400 client contacts on a public cloud link with no password.",
+   good:{t:"Disable public link sharing and restrict access to named, authenticated recipients", f:"Right. Public “anyone with the link” URLs get indexed and leaked easily."},
+   bad:[{t:"Keep the link live until the quarter closes", f:"Unauthenticated cloud links expose your entire prospect pipeline to anyone who finds the URL."}]},
+
+  // ---- Sales Floor (sal) — Level 2
+  {id:"recordingdemo", d:"sal", lvl:2, p:"con", title:"Secretly recording discovery calls", text:"Sales enables an AI note-taker bot that joins client video calls and records audio automatically without notifying attendees.",
+   good:{t:"Display clear upfront recording notice and obtain consent before the bot records", f:"Right. Automated recording and AI transcription require transparent notice and lawful basis."},
+   bad:[{t:"Hide the bot in the participant list so clients speak freely", f:"Covert recording violates transparency laws and destroys client trust."}]},
+  {id:"scrapelink", d:"sal", lvl:2, p:"crm", title:"Browser extension scraping profiles", text:"Sales reps install a third-party browser extension to bulk-scrape prospect emails and phone numbers from social profiles into the CRM.",
+   good:{t:"Block unauthorised scraping extensions and vet approved lead-enrichment tools", f:"Right. Automated scraping often breaches platform terms and privacy rules on bulk personal data."},
+   bad:[{t:"Encourage the team to use it to hit weekly outreach quotas", f:"Unvetted scraping extensions can also exfiltrate your own CRM data to third parties."}]},
+  {id:"objection_dsar", d:"sal", lvl:2, p:"con", title:"Prospect demands erasure after demo", text:"A prospect who attended a product demo asks {co} to delete their contact record and stop all follow-ups.",
+   good:{t:"Delete or suppress the prospect record promptly and log the erasure request", f:"Right. Honouring erasure and objection requests builds trust and keeps outreach compliant."},
+   bad:[{t:"Move them to a “re-engage in 6 months” list anyway", f:"Ignoring an erasure or opt-out request undermines lawful processing and customer trust."}]},
+
+  // ---- Marketing Studio (mkt) — Level 1
+  {id:"stop", d:"mkt", lvl:1, p:"cmp", title:"Customer replies STOP to SMS", text:"A subscriber replies STOP to a promo text. A marketer wants to send one final weekend flash-sale blast before updating the list.",
+   good:{t:"Suppress the number immediately across every SMS and email platform", f:"Right. Opt-out withdrawals take effect immediately—never send “one last message”."},
+   bad:[{t:"Send the weekend offer first, then unsubscribe them Monday", f:"Continuing direct marketing after an opt-out is a clear statutory breach."},{t:"Ask them to log into the web portal to confirm unsubscribing", f:"Withdrawing consent must be as effortless as giving it."}]},
+  {id:"agency", d:"mkt", lvl:1, p:"dpa", title:"Ad agency asks for raw database", text:"An external creative agency asks Marketing to email the full customer table so they can upload it to ad networks for lookalike targeting.",
+   good:{t:"Execute a Data Processing Agreement (DPA) first and share only consented, hashed records", f:"Right. Third-party agencies are processors requiring binding contracts and minimisation."},
+   bad:[{t:"Send the raw spreadsheet today to hit the campaign launch date", f:"Handing raw customer lists to vendors without a DPA or consent violates processor rules."}]},
+  {id:"pixel", d:"mkt", lvl:1, p:"dpa", title:"Tracking pixels on signup form", text:"Marketing wants to fire five third-party ad-tech pixels on the account registration page before visitors accept cookies.",
+   good:{t:"Hold non-essential ad pixels until the user gives explicit opt-in consent", f:"Right. Behavioural tracking cookies and pixels require prior informed consent."},
+   bad:[{t:"Fire the pixels by default and mention them in the footer", f:"Pre-ticked or silent tracking leaks registration behaviour to third-party ad networks."}]},
+  {id:"lookalike", d:"mkt", lvl:1, p:"cmp", title:"Dormant transactional email blast", text:"Marketing finds 80,000 customer emails from support tickets over three years who never opted into promos and plans a newsletter blast.",
+   good:{t:"Do not send promotional emails to contacts who lack marketing consent", f:"Right. Transactional support contacts cannot be repurposed for marketing without permission."},
+   bad:[{t:"Send it anyway—they can unsubscribe if they want", f:"Assuming opt-out consent on old transactional records triggers spam blacklisting and fines."}]},
+
+  // ---- Marketing Studio (mkt) — Level 2
+  {id:"giveaway", d:"mkt", lvl:2, p:"cmp", title:"Bundled consent in prize draw", text:"A social media giveaway form forces entrants to agree to receive daily partner marketing SMSs in order to enter the draw.",
+   good:{t:"Separate the prize draw entry from optional, unticked marketing consent boxes", f:"Right. Consent must be freely given and unbundled from contest participation."},
+   bad:[{t:"Keep it mandatory—otherwise nobody ticks the marketing box", f:"Forced or bundled consent is invalid under modern data protection laws."}]},
+  {id:"retargeting_list", d:"mkt", lvl:2, p:"dpa", title:"Churned user retargeting upload", text:"Marketing plans to upload emails of users who closed their accounts last year to a custom ad audience without a fresh processor check.",
+   good:{t:"Exclude closed-account users unless valid consent and DPA safeguards are confirmed", f:"Right. Targeting former users with ad audiences without a clear basis erodes trust and violates limits."},
+   bad:[{t:"Upload all historical emails—hashed emails count as anonymous", f:"Hashing a direct identifier like an email address is pseudonymisation, not full anonymisation."}]},
+  {id:"preference_sync", d:"mkt", lvl:2, p:"cmp", title:"Out-of-sync email & SMS lists", text:"A customer unsubscribes from newsletters on the website, but the SMS campaign tool still pulls from an un-synced export list.",
+   good:{t:"Connect a central preference suppression feed across all marketing tools", f:"Right. Fragmented lists cause accidental messages to people who already opted out."},
+   bad:[{t:"Sync lists once a month manually", f:"Monthly manual syncs leave customers receiving unwanted messages for weeks after opting out."}]},
+
+  // ---- IT Server Room (it) — Level 1
+  {id:"ransom", d:"it", lvl:1, p:"bak", title:"Overnight ransomware lock", text:"Ransomware encrypts a staging and billing server overnight, demanding {cur} 3M in cryptocurrency for the decryption key.",
+   good:{t:"Isolate infected hosts, restore from immutable offline backups, and notify {reg} within {hours} hours", f:"Right. Tested offline backups eliminate extortion leverage while breach reporting fulfills legal duties."},
+   bad:[{t:"Pay the ransom immediately to recover the server", f:"Paying criminals funds future attacks and often yields broken decryption keys."},{t:"Power off all servers and wait for a second demand", f:"Waiting without incident response leaves persistence mechanisms active."}]},
+  {id:"patch", d:"it", lvl:1, p:"pat", title:"Six-week-old critical server patch", text:"A critical remote-code-execution patch for your public API gateway has waited six weeks because “operations are busy”.",
+   good:{t:"Deploy the patch tonight during a scheduled maintenance window with rollback ready", f:"Right. Unpatched public-facing vulnerabilities are the primary entry point for breaches."},
+   bad:[{t:"Defer patching until the annual system upgrade", f:"Automated scanners exploit known CVEs within days of disclosure."}]},
+  {id:"logins", d:"it", lvl:1, p:"mon", title:"3:00 a.m. root login from abroad", text:"Security alerts flag a privileged admin login at 3:00 a.m. from an unrecognised overseas IP address.",
+   good:{t:"Revoke active sessions, rotate keys, inspect audit logs for exfiltration, and assess breach scope", f:"Right. Investigating audit logs determines whether personal data was accessed or copied."},
+   bad:[{t:"Assume an engineer is travelling and clear the alert", f:"Unverified overseas root logins are a textbook indicator of compromised credentials."},{t:"Change the password without checking what was accessed", f:"Resetting credentials alone ignores stolen API keys or exfiltrated databases."}]},
+  {id:"leaver", d:"it", lvl:1, p:"acc", title:"Orphaned ex-admin account", text:"During an access review, IT finds that a systems engineer who left two months ago still has active VPN and database credentials.",
+   good:{t:"Disable all credentials immediately, audit activity since departure, and automate HR offboarding", f:"Right. Orphaned privileged accounts are prime targets for insider misuse or credential stuffing."},
+   bad:[{t:"Leave it open in case they need to answer handover questions", f:"Former staff must never retain live production access after their departure date."}]},
+  {id:"usb", d:"it", lvl:1, p:"trn", title:"Unlabelled USB drive in lobby", text:"A staff member finds a USB flash drive labelled “2026 Bonus Schedule” near the {co} entrance and brings it to IT.",
+   good:{t:"Quarantine the drive in an isolated sandbox and warn staff never to plug in unknown media", f:"Right. Baiting attacks rely on curiosity to execute malicious payloads on corporate endpoints."},
+   bad:[{t:"Plug it into an office workstation to identify the owner", f:"HID-spoofing USB drives can inject malware within milliseconds of insertion."}]},
+
+  // ---- IT Server Room (it) — Level 2
+  {id:"s3bucket", d:"it", lvl:2, p:"mon", title:"Misconfigured cloud storage bucket", text:"A security researcher alerts IT that a cloud backup bucket holding customer KYC scans is publicly readable without authentication.",
+   good:{t:"Lock bucket ACLs immediately, audit access logs for downloads, and notify {reg} within {hours} hours", f:"Right. Public cloud storage exposure requires immediate lockdown, forensic log review, and breach notification."},
+   bad:[{t:"Make the bucket private and hope nobody downloaded anything", f:"If logs show external IP hits on exposed KYC files, failing to notify is an unlawful cover-up."}]},
+  {id:"shadow_db", d:"it", lvl:2, p:"pat", title:"Unpatched analytics database clone", text:"IT discovers an unpatched staging database clone holding live customer emails and phone numbers used by developers for testing.",
+   good:{t:"Mask or synthetic-test the data, remove live personal data from staging, and patch the instance", f:"Right. Production personal data should not sit in unpatched test or staging environments."},
+   bad:[{t:"Keep live records in staging so bug reports look realistic", f:"Staging servers often have weaker monitoring and patching than production."}]},
+  {id:"backup_restore_fail", d:"it", lvl:2, p:"bak", title:"Corrupted nightly backup alert", text:"Backup monitoring shows the last ten nightly snapshots of the customer directory failed verification right before a storage outage.",
+   good:{t:"Run an emergency restore test on valid earlier backups, fix backup jobs, and alert leadership", f:"Right. Unverified backups can fail when you need them most—regular restore tests are essential."},
+   bad:[{t:"Ignore the alert because the backup job still says “completed”", f:"Job completion without integrity checks can mask corrupt or incomplete backups."}]},
+
+  // ---- Whole Company (any) — Level 1
+  {id:"regulator", d:"any", lvl:1, p:"trn", title:"Unannounced regulator inspection", text:"Inspectors from {reg} arrive at {co} to review your Record of Processing Activities (RoPA) and staff training logs.",
+   good:{t:"Cooperate transparently and present your up-to-date RoPA and training records", f:"Right. Demonstrable accountability and documented governance build regulatory trust."},
+   bad:[{t:"Tell inspectors to come back next month when leadership is free", f:"Obstructing or stalling an inspection triggers formal enforcement notices."}]},
+  {id:"phish", d:"any", lvl:1, p:"trn", title:"Smishing text sent to all staff", text:"Every employee at {co} receives an SMS: “Your HR portal password expires in 2 hours. Tap here to keep access.”",
+   good:{t:"Broadcast an immediate company-wide warning, block the domain, and reset affected logins", f:"Right. Rapid employee reporting and domain blocking contain credential-harvesting waves."},
+   bad:[{t:"Let each employee decide whether the link looks legitimate", f:"Without an active alert, multiple staff will enter their corporate passwords."}]},
+
+  // ---- Whole Company (any) — Level 2
+  {id:"supplier", d:"any", lvl:2, p:"trn", title:"Cloud vendor breach notification", text:"A third-party vendor informs {co} that its servers were breached and customer records you shared with them may have been exfiltrated.",
+   good:{t:"Demand forensic details immediately, assess risk to individuals, and notify {reg} within {hours} hours", f:"Right. As Data Controller, {co} remains accountable for reporting vendor breaches within {hours} hours."},
+   bad:[{t:"Wait until the vendor finishes its multi-week investigation before acting", f:"The {hours}-hour notification clock starts when you become aware of a likely breach."}]},
+  {id:"ai_prompt_leak", d:"any", lvl:2, p:"trn", title:"Confidential data pasted into public AI", text:"Staff across {co} have been pasting customer contracts, support logs, and internal code into a public generative AI chatbot.",
+   good:{t:"Issue an immediate AI acceptable-use rule, block sensitive data uploads, and offer approved enterprise tools", f:"Right. Pasting personal or confidential data into public AI tools can expose it in external logs or training pipelines."},
+   bad:[{t:"Ban all laptops instead of setting clear AI usage rules", f:"Blanket disruptions halt work without addressing the root governance and training gap."}]},
+  {id:"multi_breach_notice", d:"any", lvl:2, p:"trn", title:"Cross-border breach notification deadline", text:"A confirmed breach affects customers in {co} and a neighbouring jurisdiction with strict reporting rules and high-risk identity data.",
+   good:{t:"Coordinate incident response, document facts, and notify {reg} and affected individuals within {hours} hours", f:"Right. Timely, accurate notification to {reg} within {hours} hours—and clear advice to affected people—limits harm."},
+   bad:[{t:"Hold off on notifying {reg} until every minor log entry is reconciled", f:"Missing the {hours}-hour window is a separate compliance failure even when containment is ongoing."}]}
+];
+
+var RNG = Math.random;
+var CD_TICKS = 5, MAINT = 10, THR_PER_DEPT = 8, PURGE = 8;
+var TRUST_CALM = 3, TRUST_GOOD = 8, GRACE = 120;
+function rint(a,b){return a+Math.floor(RNG()*(b-a+1));}
+function shuffle(a){a=a.slice();for(var i=a.length-1;i>0;i--){var j=Math.floor(RNG()*(i+1));var t=a[i];a[i]=a[j];a[j]=t;}return a;}
+function clamp(v, maxVal){var m=(maxVal!==undefined)?maxVal:100; return Math.max(0,Math.min(m,v));}
+function fmt(s){
+  var T={cur:CONFIG.currency,days:CONFIG.retentionDays,hours:CONFIG.breachHours,reg:CONFIG.regulator,co:CONFIG.companyName};
+  return String(s).replace(/\{(\w+)\}/g,function(m,k){return T[k]!==undefined?T[k]:m;});
+}
+function itemById(id){return SHOP.filter(function(s){return s.id===id;})[0];}
+function winOf(S){return CONFIG.winCoins[S.lvl-1];}
+function minTrustOf(S){return CONFIG.minTrust[S.lvl-1];}
+
+// - Purchasing a department protection moves trust up (toward 100% as all purchases are completed)
+// - Earning coins (via department work/operations or right event answers) recovers trust up to
+// - When all required purchases across all departments are acquired AND trust reaches 100%, the player wins!
+var AUTO_DEL_COST = 50;
+function autoDelId(d){ return "autodel_" + d; }
+function deptBaseItems(d){
+  return SHOP.filter(function(s){ return s.dept === d; });
+}
+function deptBaseOwnedCount(S, d){
+  if(!S || !S.own) return 0;
+  return deptBaseItems(d).filter(function(s){ return !!S.own[s.id]; }).length;
+}
+function deptBaseComplete(S, d){
+  var items = deptBaseItems(d);
+  return items.length > 0 && deptBaseOwnedCount(S, d) >= items.length;
+}
+function hasAutoDel(S, d){
+  return !!(S && S.own && S.own[autoDelId(d)]);
+}
+function buyAutoDel(S, d){
+  var id = autoDelId(d);
+  if(!DEPTS[d]) return "invalid";
+  if(S.own[id]) return "owned";
+  if(!deptBaseComplete(S, d)) return "locked";
+  if(S.coins < AUTO_DEL_COST) return "poor";
+  S.coins -= AUTO_DEL_COST;
+  S.own[id] = true;
+  return "ok";
+}
+
+function requiredShopItems(S){
+  var depts = (S && S.L && S.L.depts) ? S.L.depts : ["fin","hr","sup","sal","mkt","it"];
+  return SHOP.filter(function(s){
+    return s.dept === "all" || depts.indexOf(s.dept) >= 0;
+  });
+}
+function ownedRequiredCount(S){
+  if(!S || !S.own) return 0;
+  var req = requiredShopItems(S);
+  var cnt = 0;
+  for(var i=0; i<req.length; i++){
+    if(S.own[req[i].id]) cnt++;
+  }
+  return cnt;
+}
+function allPurchasesAcquired(S){
+  var req = requiredShopItems(S);
+  return req.length > 0 && ownedRequiredCount(S) === req.length;
+}
+function computePurchaseTrust(S){
+  var req=requiredShopItems(S);
+  var owned=ownedRequiredCount(S);
+  if(req.length===0) return 100;
+  if(owned>=req.length) return 100;
+  return Math.min(96, Math.round((owned / req.length) * 96));
+}
+function trustCap(S){
+  return allPurchasesAcquired(S) ? 100 : Math.max(S.trustWatermark || 0, computePurchaseTrust(S));
+}
+
+function newGame(lvl, carryOwn){
+  var L=LEVELS[lvl-1];
+  var S={
+    lvl:lvl, L:L, tick:0,
+    coins:L.startCoins, trust:L.startTrust,
+    trustWatermark:0, // Highest trust achieved at the moment of a department purchase
+    rec:{}, cd:{}, own:{},
+    busy:false, paused:false, over:null,
+    deck:[], log:[], pending:null, incidentQueue:[],
+    next:L.firstEvent, startOwn:{},
+    nextAttack:L.atkFirst, attacks:[], earned:false
+  };
+  L.depts.forEach(function(d){S.rec[d]=0;S.cd[d]=0;});
+  if(lvl === 2){
+    S.coins = 250;
+    S.trust = 0;
+    S.trustWatermark = 0;
+    S.own = {};
+    S.startOwn = {};
+    S.earned = false;
+  } else if(carryOwn){
+    SHOP.forEach(function(s){
+      if(carryOwn[s.id] && (s.dept==="all" || L.depts.indexOf(s.dept)>=0)){
+        S.own[s.id]=true;
+        S.startOwn[s.id]=true;
+      }
+    });
+    var carriedTrust=computePurchaseTrust(S);
+    S.trust=carriedTrust;
+    S.trustWatermark=carriedTrust;
+    if(S.trust>0) S.earned=true;
+  }
+  return S;
+}
+function ownedIn(S,d){return SHOP.filter(function(s){return s.dept===d && S.own[s.id];}).length;}
+function totalInDept(d){return SHOP.filter(function(s){return s.dept===d;}).length;}
+function exposureOf(S,d){
+  var e=S.rec[d]*(1-Math.min(0.5,0.2*ownedIn(S,d)));
+  if(S.own.trn) e*=0.85;
+  return e;
+}
+function exposure(S){return S.L.depts.reduce(function(a,d){return a+exposureOf(S,d);},0);}
+function threshold(S){return THR_PER_DEPT*S.L.depts.length;}
+
+function recoverTrustFromCoins(S, coinGain){
+  if(coinGain<=0) return 0;
+  var cap = allPurchasesAcquired(S) ? 100 : Math.max(S.trustWatermark || 0, computePurchaseTrust(S));
+  if(S.trust >= cap) return 0;
+  var recoveryStep=Math.max(1, Math.round(coinGain / 4));
+  var prev=S.trust;
+  S.trust=Math.min(cap, S.trust + recoveryStep);
+  return S.trust - prev;
+}
+
+function work(S,d){
+  if(S.over||S.busy||S.paused||S.cd[d]>0) return null;
+  var D=DEPTS[d];
+  S.coins+=D.gain;
+  S.rec[d]+=D.add;
+  S.cd[d]=CD_TICKS;
+  var recovered=recoverTrustFromCoins(S, D.gain);
+  return {gain:D.gain, recovered:recovered};
+}
+function purge(S,d){
+  if(S.over||S.busy||S.paused||S.cd[d]>0||S.rec[d]<1) return false;
+  S.rec[d]=Math.max(0,S.rec[d]-PURGE); S.cd[d]=CD_TICKS; return true;
+}
+function buy(S,id){
+  var s=itemById(id);
+  if(S.own[id]) return "owned";
+  if(S.coins<s.cost) return "poor";
+  S.coins-=s.cost;
+  S.own[id]=true;
+
+    var targetTrust=computePurchaseTrust(S);
+  var boostTrust=Math.max(targetTrust, Math.min(allPurchasesAcquired(S)?100:96, S.trust + Math.max(4, Math.ceil(96/Math.max(1,requiredShopItems(S).length)))));
+  if(allPurchasesAcquired(S)) boostTrust=100;
+
+  S.trust=Math.max(S.trust, boostTrust);
+  S.trustWatermark=Math.max(S.trustWatermark || 0, S.trust);
+  if(S.trust>0) S.earned=true;
+  return "ok";
+}
+function checkEnd(S){
+  if(S.over) return;
+  if(S.trust>100) S.trust=100;
+  if(S.trust>0) S.earned=true;
+  if(allPurchasesAcquired(S) && S.trust>=100){
+    S.trust=100;
+    S.over="win";
+  } else if(S.earned&&S.trust<=0&&S.tick>=GRACE){
+    S.over="lose";
+  }
+}
+function drawEvent(S){
+  var ok=EVENTS.filter(function(e){return (e.d==="any"||S.L.depts.indexOf(e.d)>=0) && (!e.lvl||e.lvl<=S.lvl);}).map(function(e){return e.id;});
+  S.deck=S.deck.filter(function(id){return ok.indexOf(id)>=0;});
+  if(!S.deck.length) S.deck=shuffle(ok);
+  var id=S.deck.pop();
+  return EVENTS.filter(function(e){return e.id===id;})[0];
+}
+function mark(c,g){return {t:c.t,f:c.f,good:g};}
+function choicesFor(ev){return shuffle([mark(ev.good,true)].concat(ev.bad.map(function(b){return mark(b,false);})));}
+function attack(S){
+  var ds=S.L.depts, w=ds.map(function(d){return exposureOf(S,d)+2;}), tot=w.reduce(function(a,b){return a+b;},0), r=RNG()*tot, d=ds[ds.length-1];
+  for(var i=0;i<ds.length;i++){r-=w[i]; if(r<=0){d=ds[i];break;}}
+  var pc=ownedIn(S,d), mit=Math.min(0.7,0.35*pc);
+  var dmg=Math.max(1,Math.round((6+4*(S.lvl-1)+exposureOf(S,d)/2)*(1-mit))), loss=Math.round(20*S.lvl*(1-mit));
+    S.trust=clamp(S.trust-dmg, 100);
+  S.coins=Math.max(0,S.coins-loss);
+  var held=SHOP.filter(function(x){return x.dept===d&&S.own[x.id];}).map(function(x){return x.name;});
+  var outcome=pc===0?"Nothing stood in the way.":(mit>=0.7?"Your "+held.join(" and ")+" held it back.":"Your "+held.join(" and ")+" limited the damage.");
+  var msg=DEPTS[d].atk+". "+outcome+" Trust -"+dmg+"%, coins -"+loss+".";
+  S.attacks.push({dept:d,dmg:dmg,loss:loss,protected:pc});
+  S.nextAttack=rint(S.L.atkGap[0],S.L.atkGap[1]);
+  return msg;
+}
+function step(S){
+  var out={msg:null,event:null};
+  if(S.over||S.busy||S.paused) return out;
+  S.tick++;
+  S.L.depts.forEach(function(d){if(S.cd[d]>0) S.cd[d]--;});
+  if(S.tick%MAINT===0){
+    if(S.own.ret) S.L.depts.forEach(function(d){S.rec[d]=Math.max(0,S.rec[d]-3);});
+    S.L.depts.forEach(function(d){
+      if(hasAutoDel(S, d)){
+        S.rec[d]=Math.max(0,S.rec[d]-3);
+      }
+    });
+    var over=exposure(S)-threshold(S);
+    if(over>0){
+      var loss=Math.ceil(over/14);
+      S.trust=clamp(S.trust-loss, 100);
+      out.msg="Hoarding data is eroding customer trust (-"+loss+"%). Delete old records.";
+    }
+    if(S.trust>0) S.earned=true;
+  }
+  S.next--;
+  if(S.next<=0){
+    if(S.nextAttack<=1) S.nextAttack=3;
+    var ev=drawEvent(S);
+    if(!S.incidentQueue) S.incidentQueue=[];
+    S.incidentQueue.push(ev);
+    S.next=rint(S.L.gap[0],S.L.gap[1]);
+    out.event=ev;
+  }
+  S.nextAttack--;
+  if(S.nextAttack<=0){var am=attack(S); out.msg=(out.msg?out.msg+" ":"")+am;}
+  checkEnd(S);
+  return out;
+}
+function answer(S,ev,ch){
+  var prot=itemById(ev.p), has=!!S.own[ev.p], res={good:!!ch.good,title:ev.title,choice:ch.t,lesson:ch.f,delta:"",tip:""};
+  if(ch.good){
+    var gain=30*S.lvl;
+    S.coins+=gain;
+        var recovered=recoverTrustFromCoins(S, gain);
+    if(S.trust>0) S.earned=true;
+    if(recovered>0){
+      res.delta="Trust +"+recovered+"% (now "+S.trust+"%), coins +"+gain;
+    } else if(S.trust < S.trustWatermark){
+      res.delta="Trust "+S.trust+"%, coins +"+gain;
+    } else {
+      res.delta="Trust "+S.trust+"%, coins +"+gain;
+    }
+  } else {
+    var dmg=10+Math.floor(exposure(S)/8);
+    if(has){
+      dmg=Math.round(dmg/2);
+      S.trust=clamp(S.trust-dmg, 100);
+      res.delta="Your "+prot.name+" softened the blow. Trust -"+dmg+"%";
+    } else {
+      var loss=40*S.lvl;
+      S.coins=Math.max(0,S.coins-loss);
+      S.trust=clamp(S.trust-dmg, 100);
+      res.delta="No "+prot.name+" in place. Trust -"+dmg+"%, coins -"+loss;
+      res.tip=prot.name+" would have reduced this. "+prot.lesson;
+    }
+  }
+  S.log.push({id:ev.id,title:ev.title,good:res.good,choice:ch.t,lesson:ch.f,prot:prot.name,had:has});
+  S.pending=null;
+  return res;
+}
+/*ENGINE_END*/
+
+// ===== ISOLATED ZOOM & PAN CONTROLLER FOR HQ BUILDING =====
+var cam = { scale: 1, x: 0, y: 0, min: 0.85, max: 2.8 };
+var pointers = {};
+var panStart = null;
+var pinchStart = null;
+var didDrag = false;
+
+function applyCam(){
+  var svg = $("hqSvg");
+  if(!svg) return;
+  svg.style.transform = "translate(" + cam.x.toFixed(1) + "px," + cam.y.toFixed(1) + "px) scale(" + cam.scale.toFixed(3) + ")";
+  var lbl = $("zoomLvlText");
+  if(lbl) lbl.textContent = Math.round(cam.scale * 100) + "%";
+}
+
+function clampCam(){
+  var vp = $("hqViewport");
+  if(!vp) return;
+  var r = vp.getBoundingClientRect();
+  var w = r.width || window.innerWidth || 390;
+  var h = r.height || 260;
+  var maxPanX = Math.max(w * 0.65 * cam.scale, w * (cam.scale - 0.35));
+  var maxPanY = Math.max(h * 0.65 * cam.scale, h * (cam.scale - 0.35));
+  cam.x = Math.max(-maxPanX, Math.min(maxPanX, cam.x));
+  cam.y = Math.max(-maxPanY, Math.min(maxPanY, cam.y));
+}
+
+function zoomAt(factor, clientX, clientY){
+  var vp = $("hqViewport");
+  if(!vp) return;
+  var rect = vp.getBoundingClientRect();
+  var cx = (clientX !== undefined) ? (clientX - rect.left) : rect.width / 2;
+  var cy = (clientY !== undefined) ? (clientY - rect.top) : rect.height / 2;
+  var newScale = Math.max(cam.min, Math.min(cam.max, cam.scale * factor));
+  var ratio = newScale / cam.scale;
+  cam.x = cx - (cx - cam.x) * ratio;
+  cam.y = cy - (cy - cam.y) * ratio;
+  cam.scale = newScale;
+  clampCam();
+  applyCam();
+}
+
+function isMobileViewport(){
+  var vp = $("hqViewport");
+  var w = vp ? vp.getBoundingClientRect().width : window.innerWidth;
+  if(!w) w = window.innerWidth || 0;
+  return w < 640 || (window.matchMedia && window.matchMedia("(max-width: 640px)").matches);
+}
+
+function resetCam(){
+  var vp = $("hqViewport");
+  if(isMobileViewport()){
+    var r = vp ? vp.getBoundingClientRect() : { width: window.innerWidth || 390, height: 260 };
+    var w = r.width || window.innerWidth || 390;
+    var h = r.height || 260;
+    cam.scale = 1.75;
+    // Center the 3D cutaway HQ (~480, 200 in SVG space) inside the mobile viewport at 175% zoom
+    var svg = $("hqSvg");
+    var vbW = 960, vbH = 540;
+    var viewAspect = w / Math.max(1, h);
+    var vbAspect = vbW / vbH;
+    var fitScale, offsetX = 0, offsetY = 0;
+    if(viewAspect > vbAspect){
+      fitScale = h / vbH;
+      offsetX = (w - vbW * fitScale) / 2;
+    } else {
+      fitScale = w / vbW;
+      offsetY = (h - vbH * fitScale) / 2;
+    }
+    var focusSvgX = 480, focusSvgY = 205;
+    var baseX = offsetX + focusSvgX * fitScale;
+    var baseY = offsetY + focusSvgY * fitScale;
+    cam.x = (w * 0.5) - baseX * cam.scale;
+    cam.y = (h * 0.5) - baseY * cam.scale;
+  } else {
+    cam.scale = 1.08;
+    cam.x = -34;
+    cam.y = -14;
+  }
+  clampCam();
+  applyCam();
+}
+
+function initViewportControls(){
+  var vp = $("hqViewport");
+  if(!vp) return;
+
+  $("zoomInBtn").onclick = function(){ zoomAt(1.25); };
+  $("zoomOutBtn").onclick = function(){ zoomAt(0.8); };
+  $("zoomResetBtn").onclick = resetCam;
+
+  vp.addEventListener("wheel", function(e){
+    e.preventDefault();
+    var factor = e.deltaY < 0 ? 1.14 : 0.88;
+    zoomAt(factor, e.clientX, e.clientY);
+  }, { passive: false });
+
+  vp.addEventListener("pointerdown", function(e){
+    pointers[e.pointerId] = { x: e.clientX, y: e.clientY };
+    var ids = Object.keys(pointers);
+    if(ids.length === 1){
+      didDrag = false;
+      panStart = { x: e.clientX - cam.x, y: e.clientY - cam.y, rawX: e.clientX, rawY: e.clientY };
+      pinchStart = null;
+    } else if(ids.length === 2){
+      didDrag = true;
+      var p1 = pointers[ids[0]], p2 = pointers[ids[1]];
+      pinchStart = {
+        dist: Math.hypot(p2.x - p1.x, p2.y - p1.y),
+        lastX: (p1.x + p2.x) / 2,
+        lastY: (p1.y + p2.y) / 2,
+        scale: cam.scale
+      };
+    }
+  });
+
+  vp.addEventListener("pointermove", function(e){
+    if(!pointers[e.pointerId]) return;
+    pointers[e.pointerId] = { x: e.clientX, y: e.clientY };
+    var ids = Object.keys(pointers);
+    if(ids.length === 1 && panStart){
+      var dx = e.clientX - panStart.rawX;
+      var dy = e.clientY - panStart.rawY;
+      if(Math.hypot(dx, dy) > 6) didDrag = true;
+      if(didDrag){
+        cam.x = e.clientX - panStart.x;
+        cam.y = e.clientY - panStart.y;
+        clampCam();
+        applyCam();
+      }
+    } else if(ids.length === 2 && pinchStart){
+      var p1 = pointers[ids[0]], p2 = pointers[ids[1]];
+      var dist = Math.hypot(p2.x - p1.x, p2.y - p1.y);
+      var mx = (p1.x + p2.x) / 2, my = (p1.y + p2.y) / 2;
+      cam.x += mx - pinchStart.lastX;
+      cam.y += my - pinchStart.lastY;
+      pinchStart.lastX = mx; pinchStart.lastY = my;
+      if(pinchStart.dist > 10){
+        var targetScale = pinchStart.scale * (dist / pinchStart.dist);
+        var factor = targetScale / cam.scale;
+        zoomAt(factor, mx, my);
+      } else { clampCam(); applyCam(); }
+    }
+  });
+
+  function endPointer(e){
+    if(!pointers[e.pointerId]) return;
+    delete pointers[e.pointerId];
+    var ids = Object.keys(pointers);
+    if(ids.length === 1){
+      var rem = pointers[ids[0]];
+      panStart = { x: rem.x - cam.x, y: rem.y - cam.y, rawX: rem.x, rawY: rem.y };
+      pinchStart = null;
+    } else if(ids.length === 0){
+      panStart = null;
+      pinchStart = null;
+      setTimeout(function(){ didDrag = false; }, 30);
+    }
+  }
+  // Listen on window so a release outside the viewport can't leave a stale pointer (which made the next drag act like a pinch)
+  window.addEventListener("pointerup", endPointer);
+  window.addEventListener("pointercancel", endPointer);
+  window.addEventListener("blur", function(){ pointers = {}; panStart = null; pinchStart = null; });
+}
+
+// ===== 3D ISOMETRIC CUTAWAY HQ ENGINE =====
+var ISO_OX = 480, ISO_OY = 62, ISO_UX = 136, ISO_UY = 66, ISO_VX = -136, ISO_VY = 66;
+function isoPt(u, v, z){
+  return [
+    Math.round(ISO_OX + u*ISO_UX + v*ISO_VX),
+    Math.round(ISO_OY + u*ISO_UY + v*ISO_VY - (z||0))
+  ];
+}
+function ptsStr(arr){return arr.map(function(p){return p[0]+","+p[1];}).join(" ");}
+
+var HQ_ROOMS = [
+  {id:"fin", u0:0.06, u1:0.96, v0:0.06, v1:0.96, furn:"vault",    tileA:"#DBEAFE", tileB:"#BFDBFE", accent:"#2563EB"},
+  {id:"hr",  u0:1.04, u1:1.96, v0:0.06, v1:0.96, furn:"desks",    tileA:"#CFFAFE", tileB:"#A5F3FC", accent:"#0891B2"},
+  {id:"it",  u0:2.04, u1:2.94, v0:0.06, v1:0.96, furn:"servers",  tileA:"#CCFBF1", tileB:"#99F6E4", accent:"#0F766E"},
+  {id:"sup", u0:0.06, u1:0.96, v0:1.04, v1:1.96, furn:"headsets", tileA:"#E0F2FE", tileB:"#BAE6FD", accent:"#0284C7"},
+  {id:"all", u0:1.04, u1:1.96, v0:1.04, v1:1.96, furn:"atrium",   tileA:"#FEF3C7", tileB:"#FDE68A", accent:"#D97706"},
+  {id:"sal", u0:2.04, u1:2.94, v0:1.04, v1:1.96, furn:"boardroom",tileA:"#E0E7FF", tileB:"#C7D2FE", accent:"#4F46E5"},
+  {id:"mkt", u0:0.06, u1:1.96, v0:2.04, v1:2.94, furn:"studio",   tileA:"#EDE9FE", tileB:"#DDD6FE", accent:"#7C3AED"}
+];
+
+var selectedRoom = "fin";
+
+function renderCheckeredTiles(u0, u1, v0, v1, colA, colB){
+  var cols = (u1 - u0 > 1.2) ? 4 : 2;
+  var rows = 2;
+  var du = (u1 - u0) / cols;
+  var dv = (v1 - v0) / rows;
+  var out = '';
+  for(var i=0; i<cols; i++){
+    for(var j=0; j<rows; j++){
+      var a = u0 + i*du, b = a + du;
+      var c = v0 + j*dv, d = c + dv;
+      var fill = ((i+j)%2===0) ? colA : colB;
+      out += '<polygon points="'+ptsStr([isoPt(a,c,1),isoPt(b,c,1),isoPt(b,d,1),isoPt(a,d,1)])+'" fill="'+fill+'"/>';
+    }
+  }
+  return out;
+}
+
+function buildHqBuilding(){
+  var svg=$("hqSvg");
+  if(!svg) return;
+  var g='';
+
+  // Exterior street & plaza landscaping around HQ
+  g+='<polygon points="'+ptsStr([isoPt(-0.35,-0.35,-24),isoPt(3.45,-0.35,-24),isoPt(3.45,3.45,-24),isoPt(-0.35,3.45,-24)])+'" fill="#8AB878"/>';
+  g+='<polygon points="'+ptsStr([isoPt(1.9,3.02,-22),isoPt(3.2,3.02,-22),isoPt(3.2,3.45,-22),isoPt(1.9,3.45,-22)])+'" fill="#CBD5E1"/>';
+  [2.1,2.35,2.6,2.85].forEach(function(wu){
+    g+='<polygon points="'+ptsStr([isoPt(wu,3.12,-21),isoPt(wu+0.12,3.12,-21),isoPt(wu+0.12,3.36,-21),isoPt(wu,3.36,-21)])+'" fill="#F8FAFC"/>';
+  });
+
+  // Decorative campus trees outside walls
+  [[-0.2,0.5],[-0.2,2.2],[3.22,0.7],[3.22,2.1]].forEach(function(tp){
+    var pt=isoPt(tp[0],tp[1],-18);
+    g+='<g transform="translate('+pt[0]+','+pt[1]+')" pointer-events="none">'+
+       '<ellipse cx="0" cy="6" rx="12" ry="6" fill="rgba(15,23,42,0.22)"/>'+
+       '<rect x="-2.5" y="-5" width="5" height="10" fill="#78350F"/>'+
+       '<circle cx="0" cy="-12" r="12" fill="#15803D"/>'+
+       '<circle cx="-3" cy="-15" r="8" fill="#22C55E"/>'+
+       '</g>';
+  });
+
+  var cTop=isoPt(0,0,0), cRight=isoPt(3,0,0), cBot=isoPt(3,3,0), cLeft=isoPt(0,3,0);
+  var slabH=24;
+  var bRight=isoPt(3,0,-slabH), bBot=isoPt(3,3,-slabH), bLeft=isoPt(0,3,-slabH);
+
+  g+='<polygon points="'+ptsStr([isoPt(-0.06,-0.06,-27),isoPt(3.1,-0.06,-27),isoPt(3.1,3.1,-27),isoPt(-0.06,3.1,-27)])+'" fill="rgba(15,23,42,0.26)"/>';
+  g+='<polygon points="'+ptsStr([cLeft,cBot,bBot,bLeft])+'" fill="#1E3A5F" stroke="#0F2542" stroke-width="2"/>';
+  g+='<polygon points="'+ptsStr([cBot,cRight,bRight,bBot])+'" fill="#2B5082" stroke="#0F2542" stroke-width="2"/>';
+  g+='<polygon points="'+ptsStr([cTop,cRight,cBot,cLeft])+'" fill="#E2E8F0" stroke="#334155" stroke-width="3"/>';
+
+  // Thick Cutaway Back Walls
+  var wallZ=42;
+  var wTop=isoPt(0,0,wallZ), wRight=isoPt(3,0,wallZ), wLeft=isoPt(0,3,wallZ);
+  g+='<polygon points="'+ptsStr([cLeft,cTop,wTop,wLeft])+'" fill="#93C5FD" stroke="#3B82F6" stroke-width="2"/>';
+  g+='<polygon points="'+ptsStr([cTop,cRight,wRight,wTop])+'" fill="#BFDBFE" stroke="#3B82F6" stroke-width="2"/>';
+  g+='<polyline points="'+ptsStr([wLeft,wTop,wRight])+'" fill="none" stroke="#F8FAFC" stroke-width="5" stroke-linecap="round"/>';
+
+  [0.5,1.5,2.5].forEach(function(pos){
+    var pA=isoPt(pos-0.22,0,14), pB=isoPt(pos+0.22,0,14), pC=isoPt(pos+0.22,0,30), pD=isoPt(pos-0.22,0,30);
+    g+='<polygon points="'+ptsStr([pA,pB,pC,pD])+'" fill="#E0F2FE" stroke="#60A5FA" stroke-width="1.5"/>';
+    var qA=isoPt(0,pos-0.22,14), qB=isoPt(0,pos+0.22,14), qC=isoPt(0,pos+0.22,30), qD=isoPt(0,pos-0.22,30);
+    g+='<polygon points="'+ptsStr([qA,qB,qC,qD])+'" fill="#BAE6FD" stroke="#3B82F6" stroke-width="1.5"/>';
+  });
+
+  // Rooftop Company Sign (dynamically displays the username entered as Company Name)
+  var signPt=isoPt(1.5,0,wallZ+4);
+  var bannerText = (CONFIG.companyName || "PRIVACY HQ").toUpperCase();
+  g+='<g transform="translate('+signPt[0]+','+signPt[1]+')">'+
+     '<rect x="-105" y="-16" width="210" height="28" rx="8" fill="#0F172A" stroke="#38BDF8" stroke-width="2"/>'+
+     '<text x="0" y="3" text-anchor="middle" fill="#FFFFFF" font-family="system-ui,sans-serif" font-size="12.5" font-weight="800" letter-spacing="0.8">'+esc(bannerText)+'</text>'+
+     '</g>';
+
+  // Thick Interior Partition Cutaway Walls
+  var divZ=16;
+  [1,2].forEach(function(u){
+    var endV = (u===2) ? 3 : 2;
+    g+='<polygon points="'+ptsStr([isoPt(u,0,0),isoPt(u,endV,0),isoPt(u,endV,divZ),isoPt(u,0,divZ)])+'" fill="#93C5FD" stroke="#60A5FA" stroke-width="1"/>';
+    g+='<line x1="'+isoPt(u,0,divZ)[0]+'" y1="'+isoPt(u,0,divZ)[1]+'" x2="'+isoPt(u,endV,divZ)[0]+'" y2="'+isoPt(u,endV,divZ)[1]+'" stroke="#F8FAFC" stroke-width="3"/>';
+  });
+  [1,2].forEach(function(v){
+    g+='<polygon points="'+ptsStr([isoPt(0,v,0),isoPt(3,v,0),isoPt(3,v,divZ),isoPt(0,v,divZ)])+'" fill="#A5B4FC" stroke="#818CF8" stroke-width="1"/>';
+    g+='<line x1="'+isoPt(0,v,divZ)[0]+'" y1="'+isoPt(0,v,divZ)[1]+'" x2="'+isoPt(3,v,divZ)[0]+'" y2="'+isoPt(3,v,divZ)[1]+'" stroke="#F8FAFC" stroke-width="3"/>';
+  });
+
+  // Render Each Department Room Inside the HQ Building
+  HQ_ROOMS.forEach(function(rm){
+    var isAll = rm.id==="all";
+    var D = isAll ? {name:"Governance Hub", short:"Governance", gain:0, work:"Company-wide"} : DEPTS[rm.id];
+    var p0=isoPt(rm.u0,rm.v0,1), p1=isoPt(rm.u1,rm.v0,1), p2=isoPt(rm.u1,rm.v1,1), p3=isoPt(rm.u0,rm.v1,1);
+    var ctr=isoPt((rm.u0+rm.u1)/2, (rm.v0+rm.v1)/2, 1);
+
+    g+='<g class="hq-room" data-room="'+rm.id+'" tabindex="0" role="button" aria-label="'+esc(D.name)+' room">';
+    g+='<g class="room-floor">'+renderCheckeredTiles(rm.u0,rm.u1,rm.v0,rm.v1,rm.tileA,rm.tileB)+
+       '<polygon points="'+ptsStr([p0,p1,p2,p3])+'" fill="none" stroke="'+rm.accent+'" stroke-width="2"/></g>';
+    g+='<polygon class="room-select-ring" points="'+ptsStr([p0,p1,p2,p3])+'" fill="rgba(255,255,255,0.26)" stroke="#0F172A" stroke-width="3.5" stroke-dasharray="7,4"/>';
+    g+='<polygon class="shield-aura" points="'+ptsStr([p0,p1,p2,p3])+'" fill="rgba(16,185,129,0.14)" stroke="#059669" stroke-width="3"/>';
+
+    g+='<g class="room-props-wrap" transform="translate('+ctr[0]+','+ctr[1]+')">'+
+       '<g class="room-props" data-props="'+rm.id+'">'+renderRoomFurniture(rm.furn, rm.accent)+'</g></g>';
+
+    // Room Header Pill
+    g+='<g transform="translate('+ctr[0]+','+(ctr[1]-31)+')">';
+    g+='<rect x="-68" y="-14" width="136" height="27" rx="13.5" fill="#0F172A" opacity="0.93" stroke="rgba(255,255,255,0.22)" stroke-width="1"/>';
+    g+='<circle class="room-dot" cx="-52" cy="-0.5" r="5" fill="#22C55E"/>';
+    g+='<text x="-40" y="4.5" fill="#FFFFFF" font-family="system-ui,sans-serif" font-size="14" font-weight="800">'+esc(D.short)+'</text>';
+    g+='<text class="room-rec" x="60" y="4.5" text-anchor="end" fill="#93C5FD" font-family="system-ui,sans-serif" font-size="13" font-weight="700">'+(isAll?"HQ":"0r")+'</text>';
+    g+='</g>';
+
+    // World-Space Collection Pill
+    if(!isAll){
+      g+='<g class="work-btn-pill" data-quickwork="'+rm.id+'" transform="translate('+ctr[0]+','+(ctr[1]+26)+')">';
+      g+='<rect x="-62" y="-15" width="124" height="30" rx="15" fill="'+rm.accent+'" stroke="#FFFFFF" stroke-width="1.8"/>';
+      g+='<rect class="pill-cd-bar" x="-58" y="9" width="0" height="3.5" rx="1.75" fill="#FACC15"/>';
+      g+='<text x="0" y="4.5" text-anchor="middle" fill="#FFFFFF" font-family="system-ui,sans-serif" font-size="14" font-weight="800">⚡ +'+D.gain+' Coins</text>';
+      g+='</g>';
+    } else {
+      g+='<g transform="translate('+ctr[0]+','+(ctr[1]+26)+')">';
+      g+='<rect x="-64" y="-14" width="128" height="28" rx="14" fill="#B45309" stroke="#FFFFFF" stroke-width="1.5"/>';
+      g+='<text class="gov-status" x="0" y="4.5" text-anchor="middle" fill="#FFFFFF" font-family="system-ui,sans-serif" font-size="13" font-weight="800">🛡️ Staff Training</text>';
+      g+='</g>';
+    }
+
+    // Coin Burst Particle Slot
+    g+='<g class="pop-slot" transform="translate('+ctr[0]+','+(ctr[1]-42)+')"></g>';
+    g+='</g>';
+  });
+
+  // Entrance Lobby & Stanchion Queue
+  g+='<g pointer-events="none">';
+  var st1=isoPt(2.22,2.25,2), st2=isoPt(2.55,2.42,2), st3=isoPt(2.22,2.65,2), st4=isoPt(2.55,2.82,2);
+  g+='<line x1="'+st1[0]+'" y1="'+st1[1]+'" x2="'+st2[0]+'" y2="'+st2[1]+'" stroke="#EF4444" stroke-width="2.5"/>';
+  g+='<line x1="'+st3[0]+'" y1="'+st3[1]+'" x2="'+st4[0]+'" y2="'+st4[1]+'" stroke="#EF4444" stroke-width="2.5"/>';
+  [st1,st2,st3,st4].forEach(function(sp){
+    g+='<circle cx="'+sp[0]+'" cy="'+sp[1]+'" r="3" fill="#F59E0B" stroke="#78350F" stroke-width="1"/>';
+  });
+  var doorPt=isoPt(2.5,3.02,0);
+  g+='<g transform="translate('+doorPt[0]+','+doorPt[1]+')">'+
+     '<polygon points="-28,-14 0,0 0,16 -28,2" fill="#38BDF8" stroke="#0284C7" stroke-width="2"/>'+
+     '<text x="-14" y="26" text-anchor="middle" fill="#0F172A" font-family="system-ui,sans-serif" font-size="12" font-weight="800">ENTRANCE</text>'+
+     '</g>';
+  g+='</g>';
+
+  // Choreographed Animated Characters Layer
+  g+='<g id="hqActorsLayer" pointer-events="none"></g>';
+
+  svg.innerHTML=g;
+
+  svg.onclick=function(e){
+    if(didDrag) return;
+    var qw=e.target.closest("[data-quickwork]");
+    if(qw && S){
+      var d=qw.dataset.quickwork;
+      selectRoom(d);
+      triggerWorkFromHq(d);
+      return;
+    }
+    var rm=e.target.closest(".hq-room[data-room]");
+    if(rm && S){
+      var id=rm.dataset.room;
+      selectRoom(id);
+      if(id!=="all") triggerWorkFromHq(id);
+    }
+  };
+  svg.onkeydown=function(e){
+    if(e.key==="Enter"||e.key===" "){
+      var rm=e.target.closest(".hq-room[data-room]");
+      if(rm && S){
+        e.preventDefault();
+        var id=rm.dataset.room;
+        selectRoom(id);
+        if(id!=="all") triggerWorkFromHq(id);
+      }
+    }
+  };
+
+  initActors();
+}
+
+function renderRoomFurniture(type, color){
+  var s='<g opacity="0.94" pointer-events="none">';
+  s+='<g class="prop-dust"><path d="M-24,-10 Q-16,-6 -12,-14 M-22,-6 Q-15,-4 -10,-11" fill="none" stroke="#94A3B8" stroke-width="1.2"/></g>';
+
+  if(type==="vault"){
+    s+='<polygon points="-16,0 0,8 16,0 0,-8" fill="#64748B"/>'+
+       '<polygon points="-16,0 0,8 0,21 -16,13" fill="#334155"/>'+
+       '<polygon points="0,8 16,0 16,13 0,21" fill="#475569"/>'+
+       '<circle cx="8" cy="11" r="3.5" fill="#FACC15" stroke="#854D0E" stroke-width="1"/>';
+    s+='<g class="prop-tier-1" transform="translate(-22,8)">'+
+       '<polygon points="-8,0 0,4 8,0 0,-4" fill="#4ADE80"/>'+
+       '<polygon points="-8,0 0,4 0,10 -8,6" fill="#16A34A"/>'+
+       '<polygon points="0,4 8,0 8,6 0,10" fill="#22C55E"/>'+
+       '</g>';
+    s+='<g class="prop-tier-2" transform="translate(22,8)">'+
+       '<polygon points="-8,0 0,4 8,0 0,-4" fill="#FDE047"/>'+
+       '<polygon points="-8,0 0,4 0,9 -8,5" fill="#CA8A04"/>'+
+       '<polygon points="0,4 8,0 8,5 0,9" fill="#EAB308"/>'+
+       '</g>';
+  } else if(type==="servers"){
+    [-12,6].forEach(function(ox){
+      s+='<g transform="translate('+ox+',-2)">'+
+         '<polygon points="-8,0 0,4 8,0 0,-4" fill="#1E293B"/>'+
+         '<polygon points="-8,0 0,4 0,19 -8,15" fill="#0F172A"/>'+
+         '<polygon points="0,4 8,0 8,15 0,19" fill="#334155"/>'+
+         '<circle cx="4" cy="6" r="1.4" fill="#22C55E"/><circle cx="4" cy="10" r="1.4" fill="#38BDF8"/>'+
+         '</g>';
+    });
+    s+='<g class="prop-tier-1" transform="translate(22,4)">'+
+       '<polygon points="-7,0 0,3.5 7,0 0,-3.5" fill="#0284C7"/>'+
+       '<polygon points="-7,0 0,3.5 0,17 -7,13.5" fill="#0369A1"/>'+
+       '<polygon points="0,3.5 7,0 7,13.5 0,17" fill="#0EA5E9"/>'+
+       '</g>';
+    s+='<circle class="prop-tier-2" cx="0" cy="-10" r="5" fill="#38BDF8" stroke="#FFFFFF" stroke-width="1.5"/>';
+  } else if(type==="desks" || type==="headsets"){
+    [-15,15].forEach(function(ox){
+      s+='<g transform="translate('+ox+',2)">'+
+         '<polygon points="-11,0 0,5 11,0 0,-5" fill="#FFFFFF" stroke="'+color+'" stroke-width="1"/>'+
+         '<polygon points="-11,0 0,5 0,10 -11,5" fill="#94A3B8"/>'+
+         '<polygon points="0,5 11,0 11,5 0,10" fill="#CBD5E1"/>'+
+         '<rect class="prop-tier-1" x="-4" y="-6" width="8" height="5" rx="1" fill="#0EA5E9" stroke="#0F172A" stroke-width="0.8"/>'+
+         '</g>';
+    });
+    s+='<circle class="prop-tier-2" cx="0" cy="8" r="4.5" fill="#10B981" stroke="#FFFFFF" stroke-width="1.2"/>';
+  } else if(type==="boardroom"){
+    s+='<polygon points="-22,2 0,12 22,2 0,-8" fill="#FFFFFF" stroke="'+color+'" stroke-width="1.2"/>'+
+       '<polygon points="-22,2 0,12 0,16 -22,6" fill="#64748B"/>'+
+       '<polygon points="0,12 22,2 22,6 0,16" fill="#94A3B8"/>';
+    s+='<rect class="prop-tier-1" x="-10" y="-4" width="20" height="8" rx="2" fill="#4F46E5" stroke="#FFFFFF" stroke-width="1"/>';
+    s+='<circle class="prop-tier-2" cx="0" cy="2" r="4" fill="#FACC15"/>';
+  } else if(type==="studio"){
+    s+='<polygon points="-28,2 0,14 28,2 0,-10" fill="#FFFFFF" stroke="'+color+'" stroke-width="1.2"/>'+
+       '<polygon points="-28,2 0,14 0,19 -28,7" fill="#7C3AED"/>'+
+       '<polygon points="0,14 28,2 28,7 0,19" fill="#A78BFA"/>';
+    s+='<rect class="prop-tier-1" x="-16" y="-5" width="14" height="8" rx="1.5" fill="#38BDF8" stroke="#0F172A" stroke-width="0.8"/>';
+    s+='<rect class="prop-tier-2" x="4" y="-5" width="14" height="8" rx="1.5" fill="#34D399" stroke="#0F172A" stroke-width="0.8"/>';
+  } else {
+    s+='<ellipse cx="0" cy="4" rx="22" ry="11" fill="#FDE68A" stroke="#D97706" stroke-width="1.5"/>'+
+       '<circle cx="0" cy="3" r="6" fill="#D97706"/>'+
+       '<circle class="prop-tier-1" cx="0" cy="3" r="13" fill="none" stroke="#10B981" stroke-width="2" stroke-dasharray="4,3"/>';
+  }
+  s+='</g>';
+  return s;
+}
+
+// ===== CHOREOGRAPHED CHARACTER LOOP WITH REDUCED-MOTION RESPECT =====
+var actors = [];
+var animFrameId = null;
+var lastAnimTs = 0;
+var reduceMotionQuery = window.matchMedia ? window.matchMedia("(prefers-reduced-motion: reduce)") : { matches: false };
+
+function prefersReducedMotion(){
+  return !!(reduceMotionQuery && reduceMotionQuery.matches);
+}
+
+function positionActorsStatic(){
+  actors.forEach(function(a){
+    var segs = a.path.length - 1;
+    var scaled = a.t * segs;
+    var idx = Math.floor(scaled);
+    var frac = scaled - idx;
+    var pA = a.path[idx], pB = a.path[idx+1];
+    var u = pA[0] + (pB[0] - pA[0]) * frac;
+    var v = pA[1] + (pB[1] - pA[1]) * frac;
+    var pt = isoPt(u, v, 2);
+    var el = $("actor-" + a.id);
+    if(el){
+      el.setAttribute("transform", "translate(" + pt[0] + "," + pt[1] + ")");
+      var body = el.querySelector(".actor-body");
+      if(body) body.setAttribute("transform", "translate(0,0)");
+    }
+  });
+}
+
+function initActors(){
+  actors = [
+    { id:"cust1", shirt:"#F97316", hair:"#1E293B", speed:0.42, t:0.15,
+      path:[[2.5,3.15],[2.35,2.45],[1.05,1.85],[0.65,1.55],[1.05,1.85],[2.35,2.45],[2.5,3.15]] },
+    { id:"cust2", shirt:"#EC4899", hair:"#451A03", speed:0.35, t:0.55,
+      path:[[2.65,3.15],[2.45,2.55],[2.45,1.65],[2.45,2.55],[2.65,3.15]] },
+    { id:"courier1", shirt:"#2563EB", hair:"#0F172A", carry:"#22C55E", speed:0.48, t:0.25,
+      path:[[0.55,0.65],[1.0,1.0],[2.0,1.0],[2.45,0.65],[2.0,1.0],[1.0,1.0],[0.55,0.65]] },
+    { id:"courier2", shirt:"#7C3AED", hair:"#334155", carry:"#38BDF8", speed:0.44, t:0.7,
+      path:[[1.0,2.45],[1.0,1.95],[1.5,0.75],[1.0,1.95],[1.0,2.45]] },
+    { id:"guard", shirt:"#0F172A", hair:"#FACC15", badge:true, speed:0.38, t:0.1,
+      path:[[1.18,1.18],[1.82,1.18],[1.82,1.82],[1.18,1.82],[1.18,1.18]] }
+  ];
+
+  var layer = $("hqActorsLayer");
+  if(!layer) return;
+  var h = '';
+  actors.forEach(function(a){
+    h += '<g id="actor-'+a.id+'">'+
+         '<ellipse cx="0" cy="4" rx="5.5" ry="2.8" fill="rgba(15,23,42,0.28)"/>'+
+         '<g class="actor-body">'+
+         '<rect x="-3.5" y="-8" width="7" height="9" rx="3" fill="'+a.shirt+'" stroke="#FFFFFF" stroke-width="0.8"/>'+
+         '<circle cx="0" cy="-12" r="4" fill="#FDE68A" stroke="#78350F" stroke-width="0.7"/>'+
+         '<path d="M-4,-13 Q0,-17 4,-13" fill="'+a.hair+'"/>'+
+         (a.carry ? '<rect x="3" y="-7" width="5" height="4" rx="1" fill="'+a.carry+'" stroke="#0F172A" stroke-width="0.6"/>' : '')+
+         (a.badge ? '<circle cx="0" cy="-4" r="1.5" fill="#38BDF8"/>' : '')+
+         '</g></g>';
+  });
+  layer.innerHTML = h;
+
+  positionActorsStatic();
+
+  if(animFrameId) cancelAnimationFrame(animFrameId);
+  if(prefersReducedMotion()) return;
+  lastAnimTs = performance.now();
+  animFrameId = requestAnimationFrame(animateActors);
+}
+
+function animateActors(ts){
+  if(prefersReducedMotion()){
+    positionActorsStatic();
+    animFrameId = null;
+    return;
+  }
+  var dt = Math.min(0.1, (ts - lastAnimTs) / 1000);
+  lastAnimTs = ts;
+
+  if(S && !S.paused && !S.busy && !S.over && !document.hidden){
+    var speedMult = (S.own && S.own.trn) ? 1.35 : 1.0;
+    actors.forEach(function(a){
+      var segs = a.path.length - 1;
+      a.t = (a.t + dt * a.speed * speedMult / segs) % 1;
+      var scaled = a.t * segs;
+      var idx = Math.floor(scaled);
+      var frac = scaled - idx;
+      var pA = a.path[idx], pB = a.path[idx+1];
+      var u = pA[0] + (pB[0] - pA[0]) * frac;
+      var v = pA[1] + (pB[1] - pA[1]) * frac;
+      var pt = isoPt(u, v, 2);
+      var bob = Math.abs(Math.sin(ts * 0.012 + idx)) * 2.2;
+      var el = $("actor-" + a.id);
+      if(el){
+        el.setAttribute("transform", "translate(" + pt[0] + "," + pt[1] + ")");
+        var body = el.querySelector(".actor-body");
+        if(body) body.setAttribute("transform", "translate(0," + (-bob.toFixed(1)) + ")");
+      }
+    });
+  }
+  animFrameId = requestAnimationFrame(animateActors);
+}
+
+if(reduceMotionQuery && reduceMotionQuery.addEventListener){
+  reduceMotionQuery.addEventListener("change", function(){
+    if(prefersReducedMotion()){
+      if(animFrameId){ cancelAnimationFrame(animFrameId); animFrameId = null; }
+      positionActorsStatic();
+    } else if(!animFrameId && actors.length){
+      lastAnimTs = performance.now();
+      animFrameId = requestAnimationFrame(animateActors);
+    }
+  });
+}
+
+function triggerJuice(d, isUpgrade){
+  if(prefersReducedMotion()) return;
+  var propEl = document.querySelector('.room-props[data-props="'+d+'"]');
+  if(propEl){
+    propEl.classList.remove("spring-pop");
+    void propEl.offsetWidth;
+    propEl.classList.add("spring-pop");
+  }
+  var meter = $(isUpgrade ? "trustMeter" : "profitMeter");
+  if(meter){
+    meter.classList.remove("pop");
+    void meter.offsetWidth;
+    meter.classList.add("pop");
+    setTimeout(function(){ meter.classList.remove("pop"); }, 220);
+  }
+}
+
+function spawnCoinPop(d, txt){
+  if(prefersReducedMotion()) return;
+  triggerJuice(d, false);
+  var slot = document.querySelector('.hq-room[data-room="'+d+'"] .pop-slot');
+  if(!slot) return;
+
+  var offsets = [[-16,-14],[0,-22],[16,-14]];
+  offsets.forEach(function(off, i){
+    var g = document.createElementNS("http://www.w3.org/2000/svg", "g");
+    g.setAttribute("class", "coin-particle");
+    g.style.setProperty("--dx", off[0] + "px");
+    g.style.setProperty("--dy", off[1] + "px");
+    g.style.animationDelay = (i * 0.05) + "s";
+    var c = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+    c.setAttribute("r", "5.5");
+    c.setAttribute("fill", "#FACC15");
+    c.setAttribute("stroke", "#854D0E");
+    c.setAttribute("stroke-width", "1.2");
+    g.appendChild(c);
+    slot.appendChild(g);
+    setTimeout(function(){ if(g.parentNode) g.parentNode.removeChild(g); }, 980);
+  });
+
+  var el = document.createElementNS("http://www.w3.org/2000/svg", "text");
+  el.setAttribute("text-anchor", "middle");
+  el.setAttribute("y", "-10");
+  el.setAttribute("fill", "#FEF08A");
+  el.setAttribute("stroke", "#713F12");
+  el.setAttribute("stroke-width", "1");
+  el.setAttribute("class", "coin-particle");
+  el.style.setProperty("--dx", "0px");
+  el.style.setProperty("--dy", "-18px");
+  el.setAttribute("font-family", "system-ui,sans-serif");
+  el.setAttribute("font-weight", "800");
+  el.setAttribute("font-size", "17");
+  el.textContent = txt;
+  slot.appendChild(el);
+  setTimeout(function(){ if(el.parentNode) el.parentNode.removeChild(el); }, 980);
+}
+
+function selectRoom(id){
+  selectedRoom = id;
+  renderRoomDock();
+  update();
+}
+
+function triggerWorkFromHq(d){
+  if(!S||S.over||S.busy) return;
+  if(S.paused){toast("The game is paused. Press Resume to continue.");return;}
+  if(S.cd[d]>0){toast(DEPTS[d].name+" is finishing the current job...");return;}
+  var res=work(S,d);
+  if(res){
+    spawnCoinPop(d,"+"+res.gain);
+    checkEnd(S); update();
+    if(S.over) showEnd();
+  }
+}
+
+var $=function(id){return document.getElementById(id);};
+function esc(s){return String(s).replace(/[&<>"]/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c];});}
+var PATHS={
+  fin:'<rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/>',
+  hr:'<path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>',
+  sup:'<path d="M3 18v-6a9 9 0 0 1 18 0v6"/><path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"/>',
+  sal:'<polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/>',
+  mkt:'<path d="M3 11l18-5v12L3 14v-3z"/><path d="M11.6 16.8a3 3 0 1 1-5.8-1.6"/>',
+  it:'<rect x="2" y="2" width="20" height="8" rx="2"/><rect x="2" y="14" width="20" height="8" rx="2"/><line x1="6" y1="6" x2="6.01" y2="6"/><line x1="6" y1="18" x2="6.01" y2="18"/>',
+  all:'<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>'
+};
+function icon(d){return '<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'+PATHS[d]+'</svg>';}
+
+var S=null, lastFocus=null, toastT=null, tickTimer=null, companyInputName="", currentModalType="";
+function cleanName(v){return String(v||"").replace(/\s+/g," ").trim().slice(0,24);}
+function loadName(){try{return localStorage.getItem("dcpg-company")||"";}catch(e){return "";}}
+function saveName(n){try{localStorage.setItem("dcpg-company",n);}catch(e){}}
+
+function isNative(){var c=window.Capacitor;return !!(c&&c.isNativePlatform&&c.isNativePlatform());}
+
+function init(){
+  var r=document.documentElement.style;
+  r.setProperty("--brand",CONFIG.brandColor); r.setProperty("--brandtxt",CONFIG.brandTextColor);
+  $("logo").textContent=CONFIG.logo;
+  // Maintain the game name as Privacy HQ
+  $("gameHeading").textContent=CONFIG.gameName;
+  $("intro").textContent="Welcome to "+CONFIG.gameName+". Name your company, manage all six departments in a live 3D cutaway headquarters, and unlock 100% Customer Trust by completing every department upgrade.";
+  $("player").value=cleanName(loadName());
+  $("player").addEventListener("input",function(){$("playerErr").hidden=true;$("player").removeAttribute("aria-invalid");});
+  $("startForm").addEventListener("submit",function(e){
+    e.preventDefault();
+    var n=cleanName($("player").value);
+    if(!n){
+      $("playerErr").textContent="Name your company to start."; $("playerErr").hidden=false;
+      $("player").setAttribute("aria-invalid","true"); $("player").focus(); return;
+    }
+    companyInputName=n;
+    CONFIG.companyName=n;
+    saveName(n);
+    startLevel(1,null);
+  });
+  initViewportControls();
+  if("serviceWorker" in navigator && !isNative() && /^https?:$/.test(location.protocol)){
+    navigator.serviceWorker.register("sw.js").catch(function(){});
+  }
+  setupBackButton();
+  var respBtn=$("respondIncidentBtn");
+  if(respBtn) respBtn.addEventListener("click", openNextQueuedIncident);
+  if(tickTimer) clearInterval(tickTimer);
+  tickTimer=setInterval(tick,500);
+}
+
+var lastBackAt=0;
+function setupBackButton(){
+  var c=window.Capacitor, A=c&&c.Plugins&&c.Plugins.App;
+  if(!isNative()||!A||!A.addListener) return;
+  A.addListener("backButton",function(){
+    if(!$("modal").hidden){
+      if(currentModalType==="end"){ toast("Choose Next, Replay or Switch company."); return; }
+      dismissCurrentModal(); return;
+    }
+    if(S && !S.over && $("game").hidden===false){
+      var now=Date.now();
+      if(now-lastBackAt<2000){ A.exitApp(); return; }
+      lastBackAt=now; toast("Press back again to exit. Your run will be lost.");
+      return;
+    }
+    A.exitApp();
+  });
+}
+
+function startLevel(n,carryOwn){
+  closeSheet(true);
+  S=newGame(n,carryOwn);
+  selectedRoom="fin";
+  $("start").hidden=true; $("game").hidden=false;
+  $("gameHeading").textContent=CONFIG.gameName;
+  $("who").textContent=" · Company: "+CONFIG.companyName;
+  $("stageCoTitle").textContent=CONFIG.companyName+" — "+CONFIG.gameName;
+  $("goalNum").textContent="/ "+winOf(S);
+  var reqTotal=requiredShopItems(S).length;
+  $("goal").innerHTML="<strong>Level "+n+": "+esc(S.L.name)+" ("+esc(CONFIG.companyName)+").</strong> "+esc(fmt(S.L.intro))+" ("+reqTotal+" core protections available.)";
+  buildHqBuilding();
+  renderRoomDock();
+  renderIncidentBanner();
+  update();
+  resetCam();
+  $("pauseBtn").textContent="Pause"; $("pauseBtn").setAttribute("aria-pressed","false");
+  $("gameTitle").focus();
+  window.scrollTo(0,0);
+}
+
+function autoDelHtml(S, d){
+  var id = autoDelId(d);
+  var own = hasAutoDel(S, d);
+  var label = "Auto-delete old records ("+esc(DEPTS[d].short)+")";
+  var eff = "Automatically deletes 3 old records in "+esc(DEPTS[d].name)+" every 5s.";
+  return '<li class="item autodel-item'+(own?' own':'')+'" data-autodel="'+d+'">'+
+    '<div><b>'+label+'</b><span class="eff">'+eff+'</span></div>'+
+    '<button data-act="autodel" data-d="'+d+'"'+(own?' aria-disabled="true"':'')+'>'+(own?'Installed':'<span class="bl">Buy</span> <span class="bc">'+AUTO_DEL_COST+'</span>')+'</button>'+
+  '</li>';
+}
+
+function itemHtml(s){
+  return '<li class="item" data-s="'+s.id+'"><div><b>'+esc(s.name)+'</b><span class="eff">'+esc(s.eff)+'</span></div><button data-act="buy" data-s="'+s.id+'"><span class="bl">Buy</span> <span class="bc">'+s.cost+'</span></button></li>';
+}
+
+function renderRoomDock(){
+  var dock=$("roomDock");
+  if(!dock||!S) return;
+  var tabs='<div class="dock-tabs" role="group" aria-label="Select headquarters room">';
+  S.L.depts.forEach(function(d){
+    var active = selectedRoom===d;
+    var done = ownedIn(S,d) >= totalInDept(d);
+    tabs+='<button type="button" data-select-room="'+d+'" aria-pressed="'+active+'" class="'+(active?"active":"")+'">'+esc(DEPTS[d].short)+(done?' <span class="tab-done" aria-label="Complete">✓</span>':'')+'</button>';
+  });
+  var govActive = selectedRoom==="all";
+  var govDone = !!S.own.trn;
+  tabs+='<button type="button" data-select-room="all" aria-pressed="'+govActive+'" class="'+(govActive?"active":"")+'">Governance'+(govDone?' <span class="tab-done" aria-label="Complete">✓</span>':'')+'</button></div>';
+
+  if(selectedRoom==="all"){
+    dock.innerHTML=
+      '<div class="dock-top">'+
+        '<div class="dock-title"><span class="chip">'+icon("all")+'</span><div><h3>Governance Hub (Central Atrium)</h3><small>Company-wide privacy habits required for 100% Customer Trust.</small></div></div>'+
+        tabs+
+      '</div>'+
+      '<ul class="shop">'+SHOP.filter(function(s){return s.dept==="all";}).map(itemHtml).join("")+'</ul>';
+    return;
+  }
+
+  var d=selectedRoom, D=DEPTS[d];
+  dock.innerHTML=
+    '<div class="dock-top">'+
+      '<div class="dock-title"><span class="chip">'+icon(d)+'</span><div><h3>'+esc(D.name)+'</h3><small>'+esc(D.blurb)+'</small></div></div>'+
+      tabs+
+    '</div>'+
+    '<div class="dock-grid">'+
+      '<div class="dock-ops">'+
+        '<div class="row">'+
+          '<button class="primary work" data-act="work" data-d="'+d+'"><span class="lab">'+esc(D.work)+'</span><span class="gain">+'+D.gain+'</span><span class="cd" aria-hidden="true"></span></button>'+
+          '<button data-act="purge" data-d="'+d+'">Delete old records</button>'+
+        '</div>'+
+        '<div class="risk"><div class="rbar"><span class="rfill" aria-hidden="true"></span></div><p class="rtext"><span class="rlab"></span><span class="rrec"></span></p></div>'+
+      '</div>'+
+      '<ul class="shop">'+
+        SHOP.filter(function(s){return s.dept===d;}).map(itemHtml).join("")+
+        (deptBaseComplete(S, d) ? autoDelHtml(S, d) : '')+
+      '</ul>'+
+    '</div>';
+}
+
+function update(){
+  $("coins").textContent=S.coins;
+  $("trust").textContent=S.trust;
+  $("pbar").style.width=Math.min(100,S.coins/winOf(S)*100)+"%";
+
+  var wm=S.trustWatermark||0;
+  var ownedReq=ownedRequiredCount(S);
+  var totalReq=requiredShopItems(S).length;
+  var allDone=allPurchasesAcquired(S);
+
+  $("trustCapLabel").textContent=allDone?"100% Ready ("+ownedReq+"/"+totalReq+")":ownedReq+"/"+totalReq+" upgrades";
+  $("trustGoalNum").textContent=" / 100% (All "+totalReq+" purchases)";
+
+  var tb=$("tbar");
+  tb.style.width=S.trust+"%";
+  tb.style.background=(allDone && S.trust>=100)?"var(--good)":(S.trust<wm)?"var(--warn)":(S.earned&&S.trust<20)?"var(--bad)":"var(--brand)";
+
+  var capZone=$("tcapZone");
+  if(capZone){ capZone.hidden=true; capZone.style.width="0%"; }
+
+  var blocked=S.busy||S.paused||!!S.over;
+
+  S.L.depts.forEach(function(d){
+    var e=exposureOf(S,d);
+    var ownedCnt=ownedIn(S,d);
+    var rm=document.querySelector('.hq-room[data-room="'+d+'"]');
+    if(rm){
+      rm.classList.toggle("selected",selectedRoom===d);
+      rm.classList.toggle("protected",ownedCnt>0 || !!S.own.trn);
+      rm.classList.toggle("tier-1",ownedCnt>=1);
+      rm.classList.toggle("tier-2",ownedCnt>=2);
+      rm.classList.toggle("cooling",S.cd[d]>0||blocked);
+      var dot=rm.querySelector(".room-dot");
+      if(dot) dot.setAttribute("fill",e<10?"#22C55E":e<20?"#F59E0B":"#EF4444");
+      var recTxt=rm.querySelector(".room-rec");
+      if(recTxt) recTxt.textContent=S.rec[d]+"r";
+      var pillCd=rm.querySelector(".pill-cd-bar");
+      if(pillCd){
+        var pct = S.cd[d] > 0 ? Math.round((S.cd[d]/CD_TICKS)*116) : 0;
+        pillCd.setAttribute("width", pct);
+      }
+    }
+  });
+  var govRm=document.querySelector('.hq-room[data-room="all"]');
+  if(govRm){
+    govRm.classList.toggle("selected",selectedRoom==="all");
+    govRm.classList.toggle("protected",!!S.own.trn);
+    govRm.classList.toggle("tier-1",!!S.own.trn);
+    var gs=govRm.querySelector(".gov-status");
+    if(gs) gs.textContent=S.own.trn?"🛡️ Active (-15%)":"🛡️ Training";
+  }
+
+  var dock=$("roomDock");
+  if(dock && selectedRoom!=="all"){
+    var d=selectedRoom;
+    var w=dock.querySelector(".work"), p=dock.querySelector('[data-act="purge"]');
+    if(w){
+      w.setAttribute("aria-disabled",(S.cd[d]>0||blocked)?"true":"false");
+      var cdEl=w.querySelector(".cd");
+      cdEl.classList.toggle("snap",S.cd[d]===CD_TICKS);
+      cdEl.style.transform="scaleX("+(S.cd[d]/CD_TICKS)+")";
+    }
+    if(p) p.setAttribute("aria-disabled",(S.cd[d]>0||S.rec[d]<1||blocked)?"true":"false");
+    var e=exposureOf(S,d), lab=dock.querySelector(".rlab");
+    if(lab){
+      lab.textContent=e<10?"Low exposure":e<20?"Elevated exposure":"High exposure: a big target";
+      lab.className="rlab"+(e>=20?" high":"");
+    }
+    var rrec=dock.querySelector(".rrec");
+    if(rrec) rrec.textContent="Records held: "+S.rec[d];
+    var bar=dock.querySelector(".rbar .rfill");
+    if(bar){
+      bar.style.width=Math.min(100,e/30*100)+"%";
+      bar.style.background=e<10?"var(--good)":e<20?"var(--warn)":"var(--bad)";
+    }
+  }
+
+  SHOP.forEach(function(s){
+    var li=document.querySelector('.item[data-s="'+s.id+'"]'); if(!li) return;
+    var b=li.querySelector("button"), own=!!S.own[s.id];
+    li.className="item"+(own?" own":"");
+    if(own){b.textContent="Installed";b.setAttribute("aria-disabled","true");b.setAttribute("aria-label",s.name+" installed");}
+    else{
+      var poor=S.coins<s.cost||blocked;
+      b.setAttribute("aria-disabled",poor?"true":"false");
+      b.setAttribute("aria-label","Buy "+s.name+" for "+s.cost+" coins");
+    }
+  });
+  var adLi=document.querySelector('.item.autodel-item[data-autodel]');
+  if(adLi){
+    var adDept=adLi.getAttribute("data-autodel");
+    var adBtn=adLi.querySelector("button");
+    var adOwn=hasAutoDel(S, adDept);
+    adLi.className="item autodel-item"+(adOwn?" own":"");
+    if(adOwn){
+      adBtn.textContent="Installed";
+      adBtn.setAttribute("aria-disabled","true");
+      adBtn.setAttribute("aria-label","Auto-delete old records installed");
+    } else {
+      var adPoor=S.coins<AUTO_DEL_COST||blocked;
+      adBtn.innerHTML='<span class="bl">Buy</span> <span class="bc">'+AUTO_DEL_COST+'</span>';
+      adBtn.setAttribute("aria-disabled",adPoor?"true":"false");
+      adBtn.setAttribute("aria-label","Buy Auto-delete old records for "+AUTO_DEL_COST+" coins");
+    }
+  }
+}
+
+function toast(m){
+  var t=$("toast"); t.textContent=m; t.classList.add("show"); $("live").textContent=m;
+  clearTimeout(toastT); toastT=setTimeout(function(){t.classList.remove("show");},5000);
+}
+
+$("game").addEventListener("click",function(e){
+  var tab=e.target.closest("button[data-select-room]");
+  if(tab&&S){
+    selectRoom(tab.dataset.selectRoom);
+    return;
+  }
+  var b=e.target.closest("button[data-act]"); if(!b||!S) return;
+  var a=b.dataset.act;
+  if(a==="pause"){
+    if(S.over||S.busy) return;
+    S.paused=!S.paused; b.textContent=S.paused?"Resume":"Pause"; b.setAttribute("aria-pressed",S.paused?"true":"false");
+    toast(S.paused?"Paused. Nothing happens until you resume.":"Back to work."); update(); return;
+  }
+  if(S.over||S.busy) return;
+  if(S.paused){toast("The game is paused. Press Resume to continue.");return;}
+  if(b.getAttribute("aria-disabled")==="true"){
+    if(a==="buy"&&!S.own[b.dataset.s]){var s=itemById(b.dataset.s); toast("You need "+s.cost+" coins for "+s.name+". You have "+S.coins+".");}
+    else if(a==="autodel"&&!hasAutoDel(S,b.dataset.d)){toast("You need "+AUTO_DEL_COST+" coins for Auto-delete old records. You have "+S.coins+".");}
+    return;
+  }
+  var d=b.dataset.d;
+  if(a==="work"){
+    var r=work(S,d);
+    if(r) spawnCoinPop(d,"+"+r.gain);
+  }
+  else if(a==="purge"){purge(S,d); toast("Old records deleted. Less data held means less to lose.");}
+  else if(a==="autodel"){
+    var adRes=buyAutoDel(S,d);
+    if(adRes==="ok"){
+      triggerJuice(d, true);
+      renderRoomDock();
+      update();
+      showPurchaseExplanation({
+        tag: DEPTS[d].name + " · Automation",
+        title: "Auto-delete old records ("+DEPTS[d].short+") installed",
+        impact: "Spent "+AUTO_DEL_COST+" coins · Trust at "+S.trust+"%",
+        why: "Keeping old records longer than necessary in "+DEPTS[d].name+" increases exposure and risk if a breach or audit happens.",
+        how: "Automatically removes 3 old records in "+DEPTS[d].name+" every 5 seconds during maintenance ticks, reducing stored record buildup and lowering exposure over time.",
+        lesson: "Data minimisation and scheduled cleanup shrink what you hold so there is less sensitive data to lose or expose."
+      });
+      return;
+    }
+  }
+  else if(a==="buy"){
+    var it=itemById(b.dataset.s);
+    buy(S,it.id);
+    triggerJuice(it.dept, true);
+    renderRoomDock();
+    update();
+    var deptLabel = it.dept==="all" ? "Whole HQ (Governance)" : DEPTS[it.dept].name;
+    var impactLine = "Spent "+it.cost+" coins · Trust at "+S.trust+"%";
+    if(allPurchasesAcquired(S)) impactLine += " · All required purchases complete!";
+    showPurchaseExplanation({
+      tag: deptLabel + " · Protection",
+      title: it.name + " installed",
+      impact: impactLine,
+      why: it.why || it.eff,
+      how: it.how || it.eff,
+      lesson: it.lesson
+    });
+    return;
+  }
+  checkEnd(S); update();
+  if(S.over) showEnd();
+});
+
+var INPUT_GUARD_MS = 1200;
+var incidentOpenedAt = 0;
+var incidentGuardTimer = null;
+var incidentCountdownTimer = null;
+
+function renderIncidentBanner(){
+  var banner=$("incidentAlertBanner");
+  if(!banner) return;
+  if(!S || S.over || !S.incidentQueue || S.incidentQueue.length===0 || S.busy){
+    banner.hidden=true;
+    return;
+  }
+  var countEl=$("incidentQueueCount");
+  var prevEl=$("incidentPreviewTitle");
+  if(countEl) countEl.textContent=String(S.incidentQueue.length);
+  if(prevEl) prevEl.textContent=fmt(S.incidentQueue[0].title);
+  banner.hidden=false;
+}
+
+function openNextQueuedIncident(){
+  if(!S || S.over || S.busy || !S.incidentQueue || S.incidentQueue.length===0) return;
+  if(S.paused){
+    S.paused=false;
+    var pBtn=$("pauseBtn");
+    if(pBtn){ pBtn.textContent="Pause"; pBtn.setAttribute("aria-pressed","false"); }
+  }
+  S.pending=S.incidentQueue.shift();
+  S.busy=true;
+  renderIncidentBanner();
+  showEvent(S.pending);
+}
+
+function tick(){
+  if(!S||document.hidden) return;
+  var out=step(S);
+  if(out.msg) toast(out.msg);
+  update();
+  renderIncidentBanner();
+  if(out.event && !S.busy && !S.paused && !S.over){
+    if(S.incidentQueue && S.incidentQueue.length && S.incidentQueue[S.incidentQueue.length-1]===out.event){
+      S.incidentQueue.pop();
+    }
+    S.pending=out.event;
+    S.busy=true;
+    renderIncidentBanner();
+    showEvent(S.pending);
+    return;
+  }
+  if(S.over&&!S.busy) showEnd();
+}
+
+function openSheet(html,hasDesc,type){
+  var m=$("modal"), sh=$("sheet");
+  currentModalType=type||"";
+  sh.classList.toggle("purchase-sheet", currentModalType==="purchase");
+  sh.classList.toggle("event-sheet", currentModalType==="event");
+  if(m.hidden) lastFocus=document.activeElement;
+  if(hasDesc) sh.setAttribute("aria-describedby","mText");
+  else sh.removeAttribute("aria-describedby");
+  sh.innerHTML=html; m.hidden=false; $("app").setAttribute("inert","");
+  sh.scrollTop=0; sh.focus();
+}
+function closeSheet(skipFocus){
+  if(incidentGuardTimer){ clearTimeout(incidentGuardTimer); incidentGuardTimer=null; }
+  if(incidentCountdownTimer){ clearInterval(incidentCountdownTimer); incidentCountdownTimer=null; }
+  $("modal").hidden=true; $("sheet").classList.remove("purchase-sheet"); $("sheet").classList.remove("event-sheet"); $("sheet").removeAttribute("aria-describedby"); $("app").removeAttribute("inert");
+  currentModalType="";
+  renderIncidentBanner();
+  if(!skipFocus&&lastFocus&&document.contains(lastFocus)) lastFocus.focus();
+}
+
+function dismissCurrentModal(){
+  if(!S) return closeSheet();
+  if(currentModalType==="event"){
+    var ev=S.pending;
+    var trustPen = 4;
+    var coinPen = 20 * S.lvl;
+    S.trust = clamp(S.trust - trustPen, 100);
+    S.coins = Math.max(0, S.coins - coinPen);
+    if(ev){
+      S.log.push({id:ev.id,title:ev.title,good:false,choice:"Ignored incident",lesson:"Closing or ignoring a live privacy incident erodes trust and leaves exposure unresolved.",prot:itemById(ev.p).name,had:!!S.own[ev.p]});
+    }
+    S.pending=null;
+    S.busy=false;
+    closeSheet();
+    checkEnd(S);
+    update();
+    if(S.over) showEnd();
+    else toast("Incident ignored: Trust -"+trustPen+"%, coins -"+coinPen+".");
+  } else if(currentModalType==="feedback" || currentModalType==="purchase"){
+    var cont=$("cont")||$("contPurchase");
+    if(cont) cont.click();
+    else { closeSheet(); S.busy=false; update(); }
+  }
+}
+
+$("modal").addEventListener("keydown",function(e){
+  if(e.key==="Escape"){
+    if(currentModalType==="event" || currentModalType==="feedback" || currentModalType==="purchase"){
+      e.preventDefault();
+      dismissCurrentModal();
+    }
+    return;
+  }
+  if(e.key!=="Tab") return;
+  var f=[].slice.call($("sheet").querySelectorAll("button,input")); var sh=$("sheet");
+  if(!f.length){e.preventDefault();sh.focus();return;}
+  var first=f[0], last=f[f.length-1];
+  if(e.shiftKey&&(document.activeElement===first||document.activeElement===sh)){e.preventDefault();last.focus();}
+  else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first.focus();}
+});
+
+// Active, guaranteed-clickable event answer modal with anti-misclick response delay
+function showEvent(ev){
+  var chs=choicesFor(ev);
+  var dn=ev.d==="any"?"Whole company ("+CONFIG.companyName+")":DEPTS[ev.d].name;
+  var remainingQueue = (S && S.incidentQueue) ? S.incidentQueue.length : 0;
+  var trustPen = 4;
+  var coinPen = 20 * (S ? S.lvl : 1);
+  var initSec = (INPUT_GUARD_MS / 1000).toFixed(1).replace(/\.0$/, "");
+  var h='<div class="sheet-top"><span class="tag">'+esc(dn)+'</span><button type="button" class="close-x" id="closePopupX" aria-label="Close incident (Trust -'+trustPen+'%, Coins -'+coinPen+')">✕</button></div>'+
+        '<h3 id="mTitle">'+esc(fmt(ev.title))+'</h3><p id="mText">'+esc(fmt(ev.text))+'</p><div class="choices" id="eventChoices">';
+  chs.forEach(function(c,i){
+    h+='<button type="button" class="choice-btn guarding" aria-disabled="true" data-choice-idx="'+i+'">'+esc(fmt(c.t))+'</button>';
+  });
+  h+='</div><p class="guard-note" id="incidentGuardNote" role="status" aria-live="polite">Anti-misclick delay: read options before responding ('+initSec+'s)...</p>'+
+     '<div class="incident-warn-box" role="note">'+
+       '<span class="incident-warn-icon" aria-hidden="true">⚠</span>'+
+       '<span class="incident-warn-text">Choose an action above. Closing this popup counts as <strong class="ignore-hl">ignoring the incident</strong>: Trust -'+trustPen+'% and Coins -'+coinPen+'.'+(remainingQueue>0?' <strong>'+remainingQueue+'</strong> more incident(s) queued.':'')+'</span>'+
+     '</div>';
+  openSheet(h,true,"event");
+  incidentOpenedAt = performance.now();
+
+  var closeBtn = $("closePopupX");
+  if(closeBtn){
+    closeBtn.addEventListener("click", function(e){
+      e.stopPropagation();
+      dismissCurrentModal();
+    });
+  }
+  var btns = $("sheet").querySelectorAll(".choice-btn");
+  btns.forEach(function(btn){
+    btn.addEventListener("click", function(e){
+      e.stopPropagation();
+      if(performance.now() - incidentOpenedAt < INPUT_GUARD_MS) return;
+      var idx = parseInt(btn.getAttribute("data-choice-idx"), 10);
+      if(!isNaN(idx) && chs[idx]){
+        resolveEvent(ev, chs[idx]);
+      }
+    });
+  });
+
+  if(incidentGuardTimer) clearTimeout(incidentGuardTimer);
+  if(incidentCountdownTimer) clearInterval(incidentCountdownTimer);
+
+  incidentCountdownTimer = setInterval(function(){
+    var remMs = Math.max(0, INPUT_GUARD_MS - (performance.now() - incidentOpenedAt));
+    var gn = $("incidentGuardNote");
+    if(gn && remMs > 0){
+      gn.textContent = "Anti-misclick delay: read options before responding ("+(remMs/1000).toFixed(1)+"s)...";
+    }
+  }, 100);
+
+  incidentGuardTimer = setTimeout(function(){
+    incidentGuardTimer = null;
+    if(incidentCountdownTimer){ clearInterval(incidentCountdownTimer); incidentCountdownTimer = null; }
+    var sheetEl = $("sheet");
+    if(sheetEl){
+      sheetEl.querySelectorAll(".choice-btn").forEach(function(b){
+        b.classList.remove("guarding");
+        b.removeAttribute("aria-disabled");
+      });
+    }
+    var gn = $("incidentGuardNote");
+    if(gn) gn.textContent = "You can now select a response.";
+  }, INPUT_GUARD_MS);
+}
+
+function showPurchaseExplanation(info){
+  S.busy = true;
+  currentModalType = "purchase";
+  var h =
+    '<div class="sheet-top"><span class="tag purchase-tag">✓ '+esc(info.tag)+'</span><button type="button" class="close-x" id="closePurchaseX" aria-label="Close purchase explanation">✕</button></div>'+
+    '<h3 id="mTitle">'+esc(fmt(info.title))+'</h3>'+
+    '<p class="purchase-summary" id="mText">'+esc(fmt(info.impact))+'</p>'+
+    '<div class="purchase-card cream-card"><strong>Why it matters</strong>'+esc(fmt(info.why))+'</div>'+
+    '<div class="purchase-card"><strong>How it works in HQ</strong>'+esc(fmt(info.how))+'</div>'+
+    '<div class="purchase-card"><strong>Practical rule</strong>'+esc(fmt(info.lesson))+'</div>'+
+    '<button type="button" class="primary" id="contPurchase">Back to '+esc(CONFIG.companyName)+'</button>';
+  openSheet(h, true, "purchase");
+  var contBtn = $("contPurchase");
+  var closeBtn = $("closePurchaseX");
+  var finishPurchase = function(){
+    closeSheet();
+    S.busy = false;
+    checkEnd(S);
+    update();
+    if(S.over) showEnd();
+  };
+  if(closeBtn) closeBtn.addEventListener("click", finishPurchase);
+  if(contBtn){
+    contBtn.focus();
+    contBtn.addEventListener("click", finishPurchase);
+  }
+}
+
+function resolveEvent(ev,ch){
+  var r=answer(S,ev,ch);
+  currentModalType="feedback";
+  var h='<div class="sheet-top"><span class="tag">'+(r.good?"Outcome: Safe":"Outcome: Breach")+'</span><button type="button" class="close-x" id="closeFeedbackX" aria-label="Close outcome popup">✕</button></div>'+
+        '<h3 id="mTitle">'+esc(fmt(r.title))+'</h3><p class="fb '+(r.good?"good":"bad")+'" id="mText">'+(r.good?"Good call. ":"That went badly. ")+esc(r.delta)+'</p><div class="lesson">'+esc(fmt(r.lesson))+'</div>';
+  if(r.tip) h+='<div class="lesson">Tip: '+esc(fmt(r.tip))+'</div>';
+  h+='<button type="button" class="primary" id="cont">Back to '+esc(CONFIG.companyName)+'</button>';
+  $("sheet").setAttribute("aria-describedby","mText");
+  $("sheet").innerHTML=h;
+  $("sheet").scrollTop=0;
+  var contBtn=$("cont");
+  var closeFb=$("closeFeedbackX");
+  contBtn.focus();
+  var finishFeedback = function(){
+    closeSheet(); S.busy=false; checkEnd(S); update();
+    if(S.over) showEnd();
+  };
+  if(closeFb) closeFb.addEventListener("click", finishFeedback);
+  contBtn.addEventListener("click", finishFeedback);
+  update();
+}
+
+function switchCompany(){
+  closeSheet(true); S=null; companyInputName="";
+  CONFIG.companyName=CONFIG.defaultCompanyName;
+  $("game").hidden=true; $("start").hidden=false; $("who").textContent="";
+  $("gameHeading").textContent=CONFIG.gameName;
+  $("player").value=""; $("player").focus(); window.scrollTo(0,0);
+}
+function computeScore(S){
+  var right=S.log.filter(function(x){return x.good;}).length;
+  var prots=Object.keys(S.own).length;
+  var speedBonus=S.over==="win"?Math.max(0,300-Math.floor(S.tick/2)):0;
+  return Math.max(0, S.coins + (S.trust * 15) + (right * 100) + (prots * 60) + speedBonus);
+}
+function getTrainingRating(right, total){
+  if(total <= 0){
+    return {
+      pct: 0,
+      label: "No scenarios answered yet — You have failed your company",
+      summary: "0% of scenario questions answered ("+right+" of "+total+"). You have failed your company—no breach drills were completed!"
+    };
+  }
+  var pct = (right / total) * 100;
+  var pctRounded = Math.round(pct);
+  if(pct > 80){
+    return {
+      pct: pctRounded,
+      label: "Excellent score ("+pctRounded+"% right)",
+      summary: "Excellent score! You answered "+pctRounded+"% ("+right+" of "+total+") of the privacy & security questions right."
+    };
+  }
+  if(pct >= 70){
+    return {
+      pct: pctRounded,
+      label: "Great performance ("+pctRounded+"% right)",
+      summary: "Great performance! You answered "+pctRounded+"% ("+right+" of "+total+") of the questions right."
+    };
+  }
+  if(pct >= 50){
+    return {
+      pct: pctRounded,
+      label: "Good performance ("+pctRounded+"% right)",
+      summary: "Good performance. You answered "+pctRounded+"% ("+right+" of "+total+") of the questions right."
+    };
+  }
+  return {
+    pct: pctRounded,
+    label: "You have failed your company ("+pctRounded+"% right — Red Alert: Data Breach Risk!)",
+    summary: "You have failed your company ("+pctRounded+"% right: "+right+" of "+total+"). Red Alert: Data Breach Risk—too many risky calls slipped through!"
+  };
+}
+
+function showEnd(){
+  if(S.endShown) return;
+  S.endShown=true; S.busy=true;
+  var score=computeScore(S);
+  var right=S.log.filter(function(x){return x.good;}).length, total=S.log.length;
+  var grade=getTrainingRating(right, total);
+  var isLvl1 = S.lvl === 1;
+  var won = S.over === "win";
+  var title = won ? (isLvl1 ? "Level 1 complete — Ready for Level 2" : "Level 2 complete") : "Trust collapsed — Level "+S.lvl+" failed";
+  var msg = won
+    ? (isLvl1
+      ? "You reached 100% Customer Trust and finished Level 1 at "+CONFIG.companyName+" with "+score+" pts! Proceed to Level 2 starting with 250 coins and 0% trust."
+      : "You reached 100% Customer Trust and completed Level 2 at "+CONFIG.companyName+". Final score: "+score+" pts.")
+    : "Customer trust hit 0% at "+CONFIG.companyName+". Reach 100% trust to complete a level. Score: "+score+" pts.";
+  var h='<h3 id="mTitle">'+esc(title)+'</h3><p class="who">Company: <strong>'+esc(CONFIG.companyName)+'</strong> · Game: <strong>'+esc(CONFIG.gameName)+'</strong> · Level '+S.lvl+'</p><p id="mText">'+esc(msg)+'</p>'+
+  '<dl class="stats"><div><dt>Total Score</dt><dd>'+score+'</dd></div><div><dt>Profit</dt><dd>'+S.coins+'</dd></div><div><dt>Trust</dt><dd>'+S.trust+'%</dd></div><div><dt>Right calls</dt><dd>'+right+' of '+total+' ('+grade.pct+'%)</dd></div></dl>'+
+  '<div class="lesson"><strong>Rating: '+esc(grade.label)+'.</strong><br><span>'+esc(grade.summary)+'</span></div>';
+  if(total){
+    h+='<h4>Your decisions</h4><ul class="recap">';
+    S.log.forEach(function(x){
+      h+='<li class="'+(x.good?"ok":"no")+'"><span class="mk">'+(x.good?"Right call":"Missed")+'</span><span>'+esc(fmt(x.title))+'</span>'+(x.good?"":'<span class="why">'+esc(fmt(x.lesson))+'</span>')+'</li>';
+    });
+    h+='</ul>';
+  }
+  var own=SHOP.filter(function(s){return S.own[s.id];}).map(function(s){return s.name;});
+  h+='<h4>Protections installed ('+ownedRequiredCount(S)+'/'+requiredShopItems(S).length+')</h4><p>'+(own.length?esc(own.join(", ")):"None.")+'</p>';
+  h+='<div class="actions">';
+  if(isLvl1 && won){
+    h+='<button type="button" class="primary" id="nextLvl2Btn">Proceed to Level 2 (250 coins, 0% trust)</button>'+
+       '<button type="button" id="againBtn">Replay Level 1</button>';
+  } else if(isLvl1){
+    h+='<button type="button" class="primary" id="againBtn">Retry Level 1</button>';
+  } else {
+    h+='<button type="button" class="primary" id="againBtn">Play again from Level 1</button>';
+  }
+  h+='<button type="button" id="switchBtn">Switch company</button>'+
+     '</div>';
+  openSheet(h,true,"end");
+  var curLvl = S.lvl;
+  if($("nextLvl2Btn")){
+    $("nextLvl2Btn").addEventListener("click", function(){
+      startLevel(2, null);
+    });
+  }
+  $("switchBtn").addEventListener("click", switchCompany);
+  $("againBtn").addEventListener("click", function(){
+    startLevel(isLvl1 ? 1 : 1, null);
+  });
+}
+
+init();
+</script>
+</body>
+</html>

@@ -1,0 +1,12 @@
+{
+  "appId": "org.datagovernanceafrica.privacyhq",
+  "appName": "Privacy HQ",
+  "webDir": "www",
+  "server": {
+    "androidScheme": "https"
+  },
+  "android": {
+    "allowMixedContent": false,
+    "backgroundColor": "#13559E"
+  }
+}
